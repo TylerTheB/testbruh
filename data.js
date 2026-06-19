@@ -966,6 +966,36 @@ const QUESTIONS = [
   {id:"q-3827",cat:"llm",diff:"hard",q:"A 'reward model' in RLHF is trained to:",opts:["Generate text","Predict human preference between two model outputs","Classify text","Translate text"],ans:1,tricky:true,exp:"The RM takes two outputs for the same prompt and predicts which one a human would prefer. It's then used as the reward signal for PPO."},
   {id:"q-3828",cat:"llm",diff:"medium",q:"SwiGLU activation (used in LLaMA) differs from ReLU because:",opts:["It's always 0 for negative inputs","It's a gated activation that multiplies a linear transform by a sigmoid-gated version","It's slower but more accurate","It removes nonlinearity"],ans:1,tricky:true,exp:"SwiGLU: SwiGLU(x,W,V,b,c) = (xW+b) ⊗ σ(xV+c). The gating mechanism allows more nuanced information flow than simple ReLU."},
   {id:"q-3829",cat:"llm",diff:"hard",q:"The main advantage of grouped-query attention (GQA) over multi-head attention is:",opts:["Better accuracy","Reduced KV cache memory by sharing K/V heads across multiple Q heads","Faster training","Fewer parameters overall"],ans:1,tricky:true,exp:"GQA: multiple Q heads share a single K,V head. This reduces KV cache size (the main memory bottleneck) significantly with minimal quality loss."},
+
+  // ---- Step-by-step worked questions ----
+  // Linear Algebra: matrix & vector multiplication, vector spaces
+  {id:"q-3900",cat:"la",diff:"medium",q:"Compute A·v where A = [[1,2],[3,4]] and v = [5,6]:",opts:["[17,39]","[11,25]","[23,31]","[17,24]"],ans:0,exp:"Step 1: Write out the multiplication row by row.\nRow 1 of A dots with v:\n  [1,2]·[5,6] = 1·5 + 2·6 = 5 + 12 = 17\nRow 2 of A dots with v:\n  [3,4]·[5,6] = 3·5 + 4·6 = 15 + 24 = 39\nResult: [17, 39]"},
+  {id:"q-3901",cat:"la",diff:"medium",q:"Compute AB where A = [[2,0],[1,3]] and B = [[1,4],[2,1]]:",opts:["[[2,8],[7,7]]","[[2,8],[1,3]]","[[2,4],[7,7]]","[[1,8],[7,7]]"],ans:0,exp:"Step 1: Compute each entry of AB = C.\nC₁₁ = 2·1 + 0·2 = 2\nC₁₂ = 2·4 + 0·1 = 8\nC₂₁ = 1·1 + 3·2 = 1 + 6 = 7\nC₂₂ = 1·4 + 3·1 = 4 + 3 = 7\nResult: [[2,8],[7,7]]"},
+  {id:"q-3902",cat:"la",diff:"hard",q:"Do v₁=[1,0,0], v₂=[0,1,0], v₃=[1,1,0] form a basis for R³?",opts:["Yes","No — they span only R² (xy-plane)","No — they are not independent","Yes — three vectors always form a basis"],ans:1,exp:"Step 1: Check linear independence.\nc₁v₁ + c₂v₂ + c₃v₃ = 0\n  c₁[1,0,0] + c₂[0,1,0] + c₃[1,1,0] = [0,0,0]\n  [c₁+c₃, c₂+c₃, 0] = [0,0,0]\n\nStep 2: Third component is 0 for all vectors.\nThe z-component is always 0 → these vectors span only the xy-plane (R²), not R³.\nConclusion: NOT a basis for R³ (span is wrong, and they are dependent: v₃ = v₁+v₂)."},
+  {id:"q-3903",cat:"la",diff:"hard",q:"If A is 4×5 with rank 3, what is the nullity of A?",opts:["1","2","3","5"],ans:1,exp:"Step 1: Recall rank–nullity theorem.\n  rank(A) + nullity(A) = n (number of columns)\n\nStep 2: Plug in values.\n  rank(A) = 3, n = 5 (columns)\n  3 + nullity(A) = 5\n  nullity(A) = 5 − 3 = 2\n\nThe null space has dimension 2, meaning there are 2 free variables."},
+  {id:"q-3904",cat:"la",diff:"medium",q:"Compute A·v where A = [[1,0,2],[3,1,1]] and v = [2,1,0]:",opts:["[2,7]","[3,6]","[2,8]","[1,7]"],ans:0,exp:"Step 1: A is 2×3, v is 3×1, so result is 2×1.\nRow 1: [1,0,2]·[2,1,0] = 1·2 + 0·1 + 2·0 = 2\nRow 2: [3,1,1]·[2,1,0] = 3·2 + 1·1 + 1·0 = 7\nResult: [2, 7]"},
+
+  // Calculus: derivatives, chain rule, implicit, integration
+  {id:"q-3905",cat:"calc",diff:"medium",q:"Find d/dx [x³ · eˣ] using the product rule:",opts:["x²·eˣ","3x²·eˣ + x³·eˣ","3x²·eˣ","x³·eˣ + 3"],ans:1,exp:"Step 1: Identify f = x³ and g = eˣ.\nStep 2: Find derivatives.\n  f' = 3x²,  g' = eˣ\nStep 3: Apply product rule: (fg)' = f'g + fg'.\n  (x³ · eˣ)' = 3x² · eˣ + x³ · eˣ\nStep 4: Factor (optional).\n  = eˣ(3x² + x³) = x²·eˣ·(3 + x)\n\nAnswer: 3x²·eˣ + x³·eˣ"},
+  {id:"q-3906",cat:"calc",diff:"medium",q:"Find d/dx [x²/(x+1)] using the quotient rule:",opts:["2x/(x+1)²","(x²+2x)/(x+1)²","(2x+1)/(x+1)²","(x²−2x)/(x+1)²"],ans:1,exp:"Step 1: Identify f = x² (numerator), g = x+1 (denominator).\nStep 2: Find derivatives.\n  f' = 2x,  g' = 1\nStep 3: Quotient rule: (f/g)' = (f'g − fg') / g².\n  Numerator: 2x(x+1) − x²·1\n  = 2x² + 2x − x²\n  = x² + 2x\nStep 4: Divide by g² = (x+1)².\n  Result: (x² + 2x) / (x+1)²"},
+  {id:"q-3907",cat:"calc",diff:"medium",q:"Find d/dx [sin(3x²)] step by step:",opts:["6x·cos(3x²)","3x²·cos(3x²)","cos(3x²)","6x·sin(3x²)"],ans:0,exp:"Step 1: Identify outer function and inner function.\n  Outer: sin(u), Inner: u = 3x²\nStep 2: Differentiate outer → cos(u).\nStep 3: Differentiate inner → du/dx = 6x.\nStep 4: Chain rule: d/dx sin(3x²) = cos(3x²) · 6x.\n\nAnswer: 6x·cos(3x²)"},
+  {id:"q-3908",cat:"calc",diff:"hard",q:"Find d/dx [sin(cos x)] step by step:",opts:["sin(cos x)·cos x","cos(cos x)·(−sin x)","−sin x·cos(cos x)","cos(cos x)·sin x"],ans:1,exp:"Step 1: This is a double chain rule (nested).\nStep 2: Outermost function: sin(u), where u = cos(x).\n  Derivative: cos(u) = cos(cos x)\nStep 3: Inner function: u = cos(x).\n  Derivative: du/dx = −sin x\nStep 4: Multiply: d/dx = cos(cos x) · (−sin x)\n\nAnswer: −sin x · cos(cos x)"},
+  {id:"q-3909",cat:"calc",diff:"hard",q:"Find dy/dx at (3,4) for x² + y² = 25:",opts:["−4/3","3/4","−3/4","4/3"],ans:2,exp:"Step 1: Differentiate both sides with respect to x.\n  d/dx [x² + y²] = d/dx [25]\n  2x + 2y · y' = 0\nStep 2: Solve for y'.\n  2y · y' = −2x\n  y' = −x/y\nStep 3: Evaluate at (3, 4).\n  y' = −3/4\n\nThe tangent line has slope −3/4 at (3,4)."},
+  {id:"q-3910",cat:"calc",diff:"medium",q:"Find the second derivative f''(x) of f(x) = x⁴ − 6x²:",opts:["12x² − 12","4x³ − 12x","12x − 12","12x² + 12"],ans:0,exp:"Step 1: First derivative.\n  f'(x) = d/dx [x⁴ − 6x²] = 4x³ − 12x\nStep 2: Second derivative.\n  f''(x) = d/dx [4x³ − 12x] = 12x² − 12\n\nAnswer: f''(x) = 12x² − 12"},
+  {id:"q-3911",cat:"calc",diff:"hard",q:"Find d/dx [x^x] for x > 0 step by step:",opts:["x^x · ln x","x · x^(x−1)","x^x · (ln x + 1)","x^x · x"],ans:2,exp:"Step 1: Let y = x^x. Take ln of both sides.\n  ln y = x · ln x\nStep 2: Differentiate implicitly (left side with chain rule).\n  y'/y = 1 · ln x + x · (1/x)\n  y'/y = ln x + 1\nStep 3: Solve for y'.\n  y' = y · (ln x + 1) = x^x · (ln x + 1)\n\nAnswer: x^x(ln x + 1)"},
+  {id:"q-3912",cat:"calc",diff:"hard",q:"Find d/dx [x² · sin(3x)] using product rule + chain rule:",opts:["2x · sin(3x) + x² · 3cos(3x)","2x · sin(3x) + 3x² · cos(3x)","x² · cos(3x)","2x · sin(3x) − 3x² · cos(3x)"],ans:1,exp:"Step 1: Identify f = x² and g = sin(3x).\nStep 2: Find derivatives.\n  f' = 2x\n  g' = cos(3x) · 3 = 3cos(3x)  (chain rule on inner 3x)\nStep 3: Product rule: (fg)' = f'g + fg'.\n  = 2x · sin(3x) + x² · 3cos(3x)\n  = 2x sin(3x) + 3x² cos(3x)\n\nAnswer: 2x·sin(3x) + 3x²·cos(3x)"},
+  {id:"q-3913",cat:"calc",diff:"medium",q:"Find the critical points of f(x) = x³ − 3x:",opts:["x = 0 and x = 3","x = ±1","x = ±√3","x = 0 only"],ans:1,exp:"Step 1: Find f'(x).\n  f'(x) = 3x² − 3\nStep 2: Set f'(x) = 0 to find critical points.\n  3x² − 3 = 0\n  x² = 1\n  x = 1 or x = −1\nStep 3: Check f''(x) = 6x to classify.\n  x = 1: f''(1) = 6 > 0 → local minimum\n  x = −1: f''(−1) = −6 < 0 → local maximum"},
+  {id:"q-3914",cat:"calc",diff:"medium",q:"Evaluate ∫ 2x · cos(x²) dx using substitution:",opts:["sin(x²) + C","2sin(x²) + C","x²·sin(x²) + C","cos(x²) + C"],ans:0,exp:"Step 1: Choose substitution u = x².\n  Then du/dx = 2x, so du = 2x dx\nStep 2: Rewrite the integral.\n  ∫ 2x · cos(x²) dx = ∫ cos(u) du\nStep 3: Integrate.\n  ∫ cos(u) du = sin(u) + C\nStep 4: Substitute back u = x².\n  = sin(x²) + C\n\nAnswer: sin(x²) + C"},
+  {id:"q-3915",cat:"calc",diff:"hard",q:"Evaluate ∫ x · eˣ dx using integration by parts:",opts:["xeˣ − eˣ + C","xeˣ + eˣ + C","eˣ + C","x²eˣ/2 + C"],ans:0,exp:"Step 1: Integration by parts: ∫ u dv = uv − ∫ v du.\n  Let u = x,  dv = eˣ dx\n  Then du = dx,  v = eˣ\nStep 2: Apply formula.\n  ∫ x·eˣ dx = x·eˣ − ∫ eˣ dx\nStep 3: Integrate the remaining part.\n  ∫ eˣ dx = eˣ\nStep 4: Final answer.\n  = x·eˣ − eˣ + C = eˣ(x − 1) + C\n\nAnswer: xeˣ − eˣ + C"},
+
+  // Programming: recursion, complexity, loops
+  {id:"q-3916",cat:"prog",diff:"medium",q:"What does fact(4) return?\ndef fact(n):\n    if n == 0: return 1\n    return n * fact(n-1)",opts:["24","12","6","1"],ans:0,exp:"Step 1: Trace the recursion.\n  fact(4) = 4 * fact(3)\n  fact(3) = 3 * fact(2)\n  fact(2) = 2 * fact(1)\n  fact(1) = 1 * fact(0)\n  fact(0) = 1  (base case)\nStep 2: Unwind the stack.\n  fact(1) = 1 * 1 = 1\n  fact(2) = 2 * 1 = 2\n  fact(3) = 3 * 2 = 6\n  fact(4) = 4 * 6 = 24\n\nAnswer: 24"},
+  {id:"q-3917",cat:"prog",diff:"medium",q:"What is the time complexity of this code?\nfor i in range(n):\n    for j in range(n):\n        print(i, j)",opts:["O(n)","O(n²)","O(n log n)","O(log n)"],ans:1,exp:"Step 1: Outer loop runs n times (i = 0, 1, ..., n−1).\nStep 2: For each i, the inner loop runs n times (j = 0, 1, ..., n−1).\nStep 3: Total iterations = n × n = n².\nStep 4: Each iteration is O(1) (just a print).\n\nTotal time: O(n²)"},
+  {id:"q-3918",cat:"prog",diff:"medium",q:"How many times does the inner loop run?\nfor i in range(n):\n    for j in range(i, n):\n        count += 1",opts:["n²","n(n+1)/2","n(n−1)/2","2n"],ans:2,exp:"Step 1: Count iterations for each value of i.\n  i=0: j runs n times (0 to n−1)\n  i=1: j runs n−1 times (1 to n−1)\n  i=2: j runs n−2 times\n  ...\n  i=n−1: j runs 1 time\nStep 2: Sum = n + (n−1) + (n−2) + ... + 1\n  = 1 + 2 + ... + (n−1) + n\n  = n(n+1)/2\nStep 3: But the loop starts j at i (not 0), so:\n  i=0: n iterations, i=1: n−1, ..., i=n−1: 1\n  Total = n(n−1)/2\n\nAnswer: n(n−1)/2"},
+
+  // OOP
+  {id:"q-3919",cat:"oop",diff:"medium",q:"In Python, if Dog inherits from Animal and both have a method speak(), calling dog.speak() will:",opts:["Call Animal's speak()","Call Dog's speak() (overrides parent)","Call both in order","Raise an error"],ans:1,exp:"Step 1: Method resolution order (MRO) in Python.\n  Python looks for the method in the child class first (Dog).\nStep 2: If found in Dog → use Dog's version.\n  If NOT found in Dog → look in parent (Animal).\nStep 3: This is called method overriding.\n  The child's implementation takes precedence.\n\nAnswer: Dog's speak() is called (it overrides Animal's)"},
+  {id:"q-3920",cat:"oop",diff:"medium",q:"The Open/Closed Principle (OCP) from SOLID states that classes should be:",opts:["Open for modification, closed for extension","Open for extension, closed for modification","Both open and closed at all times","Only open for inheritance"],ans:1,exp:"Step 1: OCP — Open/Closed Principle.\nStep 2: \"Open for extension\" means you can add new behavior\n  (e.g., new subclasses, new implementations of an interface).\nStep 3: \"Closed for modification\" means you should NOT need to\n  change existing, tested code to add that behavior.\nStep 4: Example: Use an abstract Shape class with draw().\n  Add new Circle, Triangle subclasses without changing Shape.\n\nAnswer: Open for extension, closed for modification"},
 ];
 
 
@@ -1073,6 +1103,17 @@ var CHEATSHEETS = {
         "• $\\text{tr}(A + B) = \\text{tr}(A) + \\text{tr}(B)$",
         "• $\\text{tr}(AB) = \\text{tr}(BA)$  (cyclic property)",
       ]},
+      { heading: "Matrix & Vector Multiplication", lines: [
+        "• Matrix $\\times$ vector: each row of $A$ dots with $\\mathbf{v}$ to give one entry of result",
+        "• Example: $\\begin{pmatrix}1&2&3\\\\4&5&6\\end{pmatrix}\\begin{pmatrix}1\\\\0\\\\2\\end{pmatrix} = \\begin{pmatrix}1\\cdot1+2\\cdot0+3\\cdot2\\\\4\\cdot1+5\\cdot0+6\\cdot2\\end{pmatrix} = \\begin{pmatrix}7\\\\16\\end{pmatrix}$",
+        "• Matrix $\\times$ matrix: each column of $B$ is transformed separately; $AB$ = $[A\\mathbf{b}_1 \\; A\\mathbf{b}_2 \\; \\cdots]$",
+        "• Example: $\\begin{pmatrix}2&1\\\\3&4\\end{pmatrix}\\begin{pmatrix}1&0\\\\2&1\\end{pmatrix} = \\begin{pmatrix}2\\cdot1+1\\cdot2 & 2\\cdot0+1\\cdot1\\\\3\\cdot1+4\\cdot2 & 3\\cdot0+4\\cdot1\\end{pmatrix} = \\begin{pmatrix}4&1\\\\11&4\\end{pmatrix}$",
+        "• $A_{m\\times n} \\cdot \\mathbf{v}_{n\\times1} = \\mathbf{b}_{m\\times1}$; $A_{m\\times n} \\cdot B_{n\\times p} = C_{m\\times p}$",
+        "• Multiplication is associative: $(AB)C = A(BC)$, but NOT commutative: $AB \\ne BA$ in general",
+        "• Matrix as linear map: $\\mathbf{x} \\mapsto A\\mathbf{x}$ stretches, rotates, or shears space",
+        "• $I\\mathbf{v} = \\mathbf{v}$ (identity); $A\\mathbf{0} = \\mathbf{0}$; $(A+B)\\mathbf{v} = A\\mathbf{v} + B\\mathbf{v}$",
+        "• Column of $A$ = image of basis vector: $A\\mathbf{e}_j$ = $j$-th column of $A$",
+      ]},
       { heading: "Determinants & Inverse", lines: [
         "• $2\\times2$: $\\det\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix} = ad - bc$",
         "• $3\\times3$: cofactor expansion along any row or column",
@@ -1092,6 +1133,19 @@ var CHEATSHEETS = {
         "• $\\text{col}(A)$ = range = image of $A$",
         "• $\\text{null}(A)$ = kernel = $\\{\\mathbf{x} : A\\mathbf{x} = \\mathbf{0}\\}$",
         "• Least-squares: $\\mathbf{x}^* = (A^TA)^{-1}A^T\\mathbf{b}$",
+      ]},
+      { heading: "Vector Spaces & Subspaces", lines: [
+        "• Vector space: closed under addition and scalar multiplication, contains zero",
+        "• Subspace test: non-empty, $\\mathbf{u}+\\mathbf{v}$ in $S$, and $c\\mathbf{u}$ in $S$ for all $\\mathbf{u},\\mathbf{v}\\in S$, $c\\in\\mathbb{R}$",
+        "• Span: $\\text{span}\\{\\mathbf{v}_1,\\ldots,\\mathbf{v}_k\\}$ = all linear combinations $c_1\\mathbf{v}_1 + \\cdots + c_k\\mathbf{v}_k$",
+        "• Linear independence: $c_1\\mathbf{v}_1 + \\cdots + c_k\\mathbf{v}_k = \\mathbf{0} \\iff c_i = 0$ for all $i$",
+        "• Basis: a linearly independent spanning set; dimension = number of basis vectors",
+        "• $\\dim(\\mathbb{R}^n) = n$; standard basis $\\{\\mathbf{e}_1,\\ldots,\\mathbf{e}_n\\}$",
+        "• Rank–nullity: $\\text{rank}(A) + \\text{nullity}(A) = n$; e.g., $A_{4\\times3}$ with rank 2 $\\Rightarrow$ nullity = $3-2=1$",
+        "• $\\text{col}(A)$: span of columns; $\\text{null}(A)$: solutions to $A\\mathbf{x}=\\mathbf{0}$",
+        "• Row space of $A$ has same dimension as column space (= rank)",
+        "• $n$ vectors in $\\mathbb{R}^m$: if $n > m$, always linearly dependent",
+        "• Change of basis: $\\mathbf{v}_{\\text{new}} = P^{-1}\\mathbf{v}_{\\text{old}}$ where columns of $P$ are new basis vectors",
       ]},
       { heading: "Eigenvalues & SVD", lines: [
         "• Eigenvector: $A\\mathbf{v} = \\lambda \\mathbf{v}$, $\\mathbf{v} \\ne \\mathbf{0}$",
@@ -1132,9 +1186,15 @@ var CHEATSHEETS = {
         "• Chain rule: $\\frac{d}{dx} f(g(x)) = f'(g(x)) \\cdot g'(x)$",
         "• $\\frac{d}{dx} \\sin(x^2) = 2x \\cos(x^2)$",
         "• $\\frac{d}{dx} e^{g(x)} = e^{g(x)} g'(x)$",
-        "• Implicit: differentiate both sides, then solve for $y'$",
+        "• Product rule worked: $\\frac{d}{dx}[x^3 \\cos x] = 3x^2 \\cos x + x^3(-\\sin x) = 3x^2 \\cos x - x^3 \\sin x$",
+        "• Quotient rule worked: $\\frac{d}{dx}\\left[\\frac{x^2}{x+1}\\right] = \\frac{2x(x+1) - x^2 \\cdot 1}{(x+1)^2} = \\frac{x^2+2x}{(x+1)^2}$",
+        "• Nested chain: $\\frac{d}{dx}[\\sin(\\cos x)] = \\cos(\\cos x) \\cdot (-\\sin x) = -\\sin x \\cos(\\cos x)$",
+        "• Implicit: $x^2 + y^2 = 25 \\Rightarrow 2x + 2y y' = 0 \\Rightarrow y' = -x/y$",
+        "• Implicit at a point: at $(3,4)$, $y' = -3/4$ so tangent slope is $-3/4$",
+        "• Second derivative: $f''(x) = \\frac{d^2 f}{dx^2} = \\frac{d}{dx}(f'(x))$",
+        "• $\\frac{d^2}{dx^2}[\\sin x] = -\\sin x$;  $\\frac{d^2}{dx^2}[e^{ax}] = a^2 e^{ax}$",
         "• Logarithmic diff: take $\\ln$ first when $y$ appears in exponent",
-        "• $\\frac{d}{dx} x^x = x^x (\\ln x + 1)$",
+        "• $\\frac{d}{dx} x^x = x^x (\\ln x + 1)$  (via $\\ln y = x \\ln x$, then $y'/y = \\ln x + 1$)",
       ]},
       { heading: "Integration", lines: [
         "• $\\int x^n \\, dx = \\frac{x^{n+1}}{n+1} + C$  (for $n \\ne -1$)",
@@ -1457,6 +1517,21 @@ var CHEATSHEETS = {
   prog: {
     title: "Programming",
     sections: [
+      { heading: "Syntax & Control Flow", lines: [
+        "• Data types: int (integer), float (decimal), str (text), bool (True/False)",
+        "• Variables: assign with =; x = 5 (int), y = 3.14 (float), s = \"hello\" (str)",
+        "• If/elif/else: branching based on conditions; elif = else if",
+        "• Ternary: value_if_true if condition else value_if_false",
+        "• For loop: iterates over a sequence (range, list, string)",
+        "• While loop: repeats while condition is True; beware infinite loops",
+        "• break: exit loop early; continue: skip to next iteration",
+        "• Functions: def f(params): ... return value — reusable blocks of code",
+        "• Parameters: positional, keyword (default values), *args (variable), **kwargs (keyword dict)",
+        "• Recursion: function calls itself; needs base case + recursive case",
+        "• Recursion example: fact(n) = n * fact(n-1), base: fact(0) = 1",
+        "• List comprehension: [expr for x in iterable if condition] — concise loops",
+        "• Scope: local (inside function) vs global; LEGB rule (Local, Enclosing, Global, Built-in)",
+      ]},
       { heading: "Complexity Cheat Sheet", lines: [
         "• $O(1)$: hash lookup, array index, stack push/pop",
         "• $O(\\log n)$: binary search, balanced BST ops, heap insert",

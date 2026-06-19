@@ -991,6 +991,35 @@ document.getElementById("mock-start").addEventListener("click", () => {
   startMockTimer();
 });
 
+// --- Curated Exam Practice buttons ---
+function startExamPractice(testId) {
+  const test = (typeof MOCK_TESTS !== "undefined") && MOCK_TESTS.find(t => t.id === testId);
+  if (!test) { toast("Exam test not found"); return; }
+  // Look up questions by ID from the global QUESTIONS array
+  const qMap = {};
+  QUESTIONS.forEach(q => { qMap[q.id] = q; });
+  const pool = [];
+  for (const id of test.questions) {
+    if (qMap[id]) pool.push(qMap[id]);
+  }
+  if (pool.length < test.questions.length) {
+    toast("Some questions are missing — starting with " + pool.length);
+  }
+  // Shuffle the curated pool
+  pool.sort(() => Math.random() - 0.5);
+  const minutes = 60;
+  mockState = {
+    qs: pool, idx: 0, selected: {}, submitted: {}, flagged: new Set(),
+    startedAt: Date.now(), seconds: minutes * 60, count: pool.length,
+    requested: pool.length,
+  };
+  renderMock();
+  startMockTimer();
+}
+
+document.getElementById("mock-exam-a").addEventListener("click", () => startExamPractice("exam-a"));
+document.getElementById("mock-exam-b").addEventListener("click", () => startExamPractice("exam-b"));
+
 function startMockTimer() {
   clearInterval(mockTimer);
   mockTimer = setInterval(() => {

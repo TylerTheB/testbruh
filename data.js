@@ -996,6 +996,121 @@ const QUESTIONS = [
   // OOP
   {id:"q-3919",cat:"oop",diff:"medium",q:"In Python, if Dog inherits from Animal and both have a method speak(), calling dog.speak() will:",opts:["Call Animal's speak()","Call Dog's speak() (overrides parent)","Call both in order","Raise an error"],ans:1,exp:"Step 1: Method resolution order (MRO) in Python.\n  Python looks for the method in the child class first (Dog).\nStep 2: If found in Dog → use Dog's version.\n  If NOT found in Dog → look in parent (Animal).\nStep 3: This is called method overriding.\n  The child's implementation takes precedence.\n\nAnswer: Dog's speak() is called (it overrides Animal's)"},
   {id:"q-3920",cat:"oop",diff:"medium",q:"The Open/Closed Principle (OCP) from SOLID states that classes should be:",opts:["Open for modification, closed for extension","Open for extension, closed for modification","Both open and closed at all times","Only open for inheritance"],ans:1,exp:"Step 1: OCP — Open/Closed Principle.\nStep 2: \"Open for extension\" means you can add new behavior\n  (e.g., new subclasses, new implementations of an interface).\nStep 3: \"Closed for modification\" means you should NOT need to\n  change existing, tested code to add that behavior.\nStep 4: Example: Use an abstract Shape class with draw().\n  Add new Circle, Triangle subclasses without changing Shape.\n\nAnswer: Open for extension, closed for modification"},
+
+  // ===== NEW CURATED EXAM QUESTIONS (q-3921 to q-3948) =====
+
+  // Math - new gap fillers
+  {id:"q-3921",cat:"math",diff:"medium",q:"What is (7 + 3) mod 5?",opts:["0","1","2","5"],ans:0,exp:"Step 1: Compute the sum.\n  7 + 3 = 10\nStep 2: Compute mod 5.\n  10 / 5 = 2 remainder 0\n  10 mod 5 = 0\n\nAnswer: 0"},
+  {id:"q-3922",cat:"math",diff:"medium",q:"The binomial expansion of (x + y)^3 is:",opts:["x^3 + 3x^2y + 3xy^2 + y^3","x^3 + xy + y^3","x^3 + 3xy + y^3","3x^2y + 3xy^2"],ans:0,exp:"Step 1: Use binomial theorem (a+b)^n.\nStep 2: (x+y)^3 = C(3,0)x^3 + C(3,1)x^2y + C(3,2)xy^2 + C(3,3)y^3\nStep 3: C(3,0)=1, C(3,1)=3, C(3,2)=3, C(3,3)=1\n  = x^3 + 3x^2y + 3xy^2 + y^3\n\nAnswer: x^3 + 3x^2y + 3xy^2 + y^3"},
+  {id:"q-3923",cat:"math",diff:"easy",q:"The complement of set A = {1,2,3} within U = {1,2,3,4,5} is:",opts:["{4,5}","{1,2,3}","{1,2,3,4,5}","{}"],ans:0,exp:"The complement A^c contains elements in U that are NOT in A.\nU = {1,2,3,4,5}, A = {1,2,3}\nA^c = U - A = {4,5}"},
+  {id:"q-3924",cat:"math",diff:"medium",q:"sec(60 degrees) =",opts:["1","2","1/2","sqrt(3)/2"],ans:1,exp:"Step 1: sec(theta) = 1/cos(theta)\nStep 2: cos(60 deg) = 1/2\nStep 3: sec(60 deg) = 1 / (1/2) = 2\n\nAnswer: 2"},
+  {id:"q-3925",cat:"math",diff:"medium",q:"csc(30 degrees) =",opts:["1","2","1/2","sqrt(3)"],ans:1,exp:"Step 1: csc(theta) = 1/sin(theta)\nStep 2: sin(30 deg) = 1/2\nStep 3: csc(30 deg) = 1 / (1/2) = 2\n\nAnswer: 2"},
+
+  // Linear Algebra - new gap fillers
+  {id:"q-3926",cat:"la",diff:"hard",q:"Compute AB where A = [[1,2,3],[0,1,4],[5,6,0]] and B = [[2,1],[0,3],[1,0]]:",opts:["[[5,7],[4,3],[10,23]]","[[5,7],[3,4],[10,23]]","[[7,5],[4,3],[23,10]]","[[5,3],[4,7],[10,23]]"],ans:0,exp:"Step 1: A is 3x3, B is 3x2, so AB is 3x2.\nStep 2: Compute each entry.\n  C11 = 1*2 + 2*0 + 3*1 = 2+0+3 = 5\n  C12 = 1*1 + 2*3 + 3*0 = 1+6+0 = 7\n  C21 = 0*2 + 1*0 + 4*1 = 0+0+4 = 4\n  C22 = 0*1 + 1*3 + 4*0 = 0+3+0 = 3\n  C31 = 5*2 + 6*0 + 0*1 = 10+0+0 = 10\n  C32 = 5*1 + 6*3 + 0*0 = 5+18+0 = 23\n\nResult: [[5,7],[4,3],[10,23]]"},
+  {id:"q-3927",cat:"la",diff:"medium",q:"The column space of A = [[1,2],[3,6]] is spanned by:",opts:["{[1,3]}","{[1,2],[3,6]}","{[2,6]}","R^2"],ans:0,exp:"Step 1: Check if columns are linearly independent.\n  Col 2 = [2,6] = 2*[1,3] = 2 * Col 1\n  Columns are dependent.\nStep 2: Column space = span of all columns = span of any independent subset.\n  Only one independent column: [1,3]\nStep 3: col(A) = span{[1,3]} — a line through origin in R^2.\n\nAnswer: span{[1,3]}"},
+  {id:"q-3928",cat:"la",diff:"hard",q:"Find a basis for the null space of A = [[1,2,1],[2,4,2]]:",opts:["{[-2,1,0],[-1,0,1]}","{[1,2,1]}","{[0,0,0]}","{[1,0,0],[0,1,0]}"],ans:0,exp:"Step 1: Row reduce A.\n  R2 = R2 - 2*R1: [[1,2,1],[0,0,0]]\nStep 2: One pivot (x1), two free variables (x2, x3).\n  x1 + 2x2 + x3 = 0\n  x1 = -2x2 - x3\nStep 3: Set x2=1,x3=0: v1 = [-2,1,0]\n  Set x2=0,x3=1: v2 = [-1,0,1]\nStep 4: Null space basis = {[-2,1,0], [-1,0,1]}\n\nAnswer: {[-2,1,0],[-1,0,1]}"},
+  {id:"q-3929",cat:"la",diff:"medium",q:"Two vectors are orthogonal if their dot product equals:",opts:["1","-1","0","Their magnitudes"],ans:2,exp:"Orthogonal (perpendicular) vectors satisfy v . w = 0.\nExample: [1,0] . [0,1] = 1*0 + 0*1 = 0."},
+  {id:"q-3930",cat:"la",diff:"medium",q:"If matrix A has eigenvalues 2 and 5, then A^2 has eigenvalues:",opts:["2 and 5","4 and 10","0 and 7","4 and 25"],ans:3,exp:"Step 1: If Av = lambda*v, then A^2*v = A(Av) = A(lambda*v) = lambda*Av = lambda^2*v.\nStep 2: Each eigenvalue gets squared.\n  2^2 = 4, 5^2 = 25\n\nAnswer: eigenvalues of A^2 are 4 and 25"},
+
+  // Calculus - new gap fillers
+  {id:"q-3931",cat:"calc",diff:"medium",q:"Find d/dx [ln(x^2 + 1)] step by step:",opts:["2x/(x^2+1)","1/(x^2+1)","2x*ln(x^2+1)","ln(2x)"],ans:0,exp:"Step 1: Chain rule: outer = ln(u), inner = u = x^2+1.\nStep 2: d/dx ln(u) = (1/u) * du/dx\nStep 3: du/dx = 2x\nStep 4: Result = 2x / (x^2 + 1)\n\nAnswer: 2x/(x^2+1)"},
+  {id:"q-3932",cat:"calc",diff:"medium",q:"Find d/dx [e^(3x+1)] step by step:",opts:["e^(3x+1)","3e^(3x+1)","(3x+1)e^(3x+1)","e^(3x+1)/(3x+1)"],ans:1,exp:"Step 1: Chain rule: outer = e^u, inner = u = 3x+1.\nStep 2: d/dx e^u = e^u * du/dx\nStep 3: du/dx = 3\nStep 4: Result = 3 * e^(3x+1)\n\nAnswer: 3e^(3x+1)"},
+  {id:"q-3933",cat:"calc",diff:"hard",q:"Evaluate limit as x approaches 0 of sin(x)/x:",opts:["0","1","infinity","undefined"],ans:1,exp:"Step 1: Direct substitution gives 0/0 (indeterminate).\nStep 2: Apply L'Hopital's rule: take derivative of top and bottom.\n  d/dx [sin(x)] = cos(x)\n  d/dx [x] = 1\nStep 3: New limit = cos(0)/1 = 1/1 = 1.\n\nThis is a fundamental limit: lim(x->0) sin(x)/x = 1"},
+  {id:"q-3934",cat:"calc",diff:"hard",q:"Evaluate the definite integral of x^2 from 0 to 2:",opts:["4","8/3","2","0"],ans:1,exp:"Step 1: Find antiderivative of x^2.\n  Integral of x^2 = x^3/3\nStep 2: Evaluate from 0 to 2.\n  F(2) - F(0) = (2^3/3) - (0^3/3)\n  = 8/3 - 0 = 8/3\n\nAnswer: 8/3"},
+  {id:"q-3935",cat:"calc",diff:"medium",q:"The Fundamental Theorem of Calculus connects:",opts:["Derivatives and limits","Integration and derivatives","Algebra and geometry","Probability and statistics"],ans:1,exp:"The Fundamental Theorem of Calculus states that differentiation and integration are inverse operations.\nIf F'(x) = f(x), then integral from a to b of f(x) dx = F(b) - F(a)."},
+
+  // Programming - new gap fillers
+  {id:"q-3936",cat:"prog",diff:"easy",q:"What does print([1,2,3,4,5][1:4]) output in Python?",opts:["[1,2,3]","[2,3,4]","[2,3,4,5]","[1,2,3,4]"],ans:1,exp:"Step 1: Python slice syntax: list[start:stop] includes start, excludes stop.\nStep 2: [1:4] means index 1 up to (but not including) index 4.\n  Index 1 = 2, index 2 = 3, index 3 = 4, index 4 = excluded\nStep 3: Result = [2, 3, 4]\n\nAnswer: [2,3,4]"},
+  {id:"q-3937",cat:"prog",diff:"medium",q:"What is the output?\nx = [1,2,3]\ny = x\ny.append(4)\nprint(len(x))",opts:["3","4","Error","1"],ans:1,exp:"Step 1: Lists are mutable and assigned by reference in Python.\nStep 2: y = x makes y point to the SAME list object as x.\nStep 3: y.append(4) modifies the shared list: now [1,2,3,4].\nStep 4: x also sees this change since it is the same object.\n  len(x) = 4\n\nAnswer: 4"},
+  {id:"q-3938",cat:"prog",diff:"easy",q:"Which data structure uses FIFO ordering?",opts:["Stack","Queue","Tree","Graph"],ans:1,exp:"Queue = First In, First Out.\n  Like a line at a store: first person in line is served first.\nStack = LIFO (Last In, First Out)."},
+  {id:"q-3939",cat:"prog",diff:"medium",q:"What does \"hello world\".split() return in Python?",opts:["['hello','world']","['h','e','l','l','o']","Error","\"hello world\""],ans:0,exp:"Step 1: str.split() with no arguments splits on whitespace.\nStep 2: \"hello world\" has one space between words.\nStep 3: Result = ['hello', 'world']\n\nNote: split() handles multiple spaces, tabs, newlines too."},
+  {id:"q-3940",cat:"prog",diff:"easy",q:"What does len({1,2,2,3}) return in Python?",opts:["4","3","Error","2"],ans:1,exp:"Step 1: {1,2,2,3} is a set.\nStep 2: Sets only store unique elements — duplicate 2 is removed.\nStep 3: The set becomes {1, 2, 3}.\nStep 4: len({1,2,3}) = 3\n\nAnswer: 3"},
+
+  // OOP - new gap fillers
+  {id:"q-3941",cat:"oop",diff:"medium",q:"An abstract class in Java:",opts:["Cannot be instantiated, may have abstract methods","Cannot have any methods","Must have all methods implemented","Can only be inherited once"],ans:0,exp:"Step 1: Abstract class = designed to be subclassed, not used directly.\nStep 2: Cannot create objects with new AbstractClass().\nStep 3: Can have both abstract (no body) and concrete (with body) methods.\nStep 4: Subclass must implement all abstract methods to be concrete.\n\nAnswer: Cannot be instantiated, may have abstract methods"},
+  {id:"q-3942",cat:"oop",diff:"medium",q:"Composition means:",opts:["A class IS another class","A class HAS another class as a member","A class inherits from multiple parents","A class has no methods"],ans:1,exp:"Step 1: Composition = HAS-A relationship.\n  Example: Car HAS-A Engine (Car contains an Engine object).\nStep 2: Contrast with inheritance (IS-A): Car IS-A Vehicle.\nStep 3: Composition is preferred over inheritance when behavior is shared\n  but there is no true IS-A relationship.\n\nAnswer: A class has another class as a member"},
+  {id:"q-3943",cat:"oop",diff:"medium",q:"Dependency Injection means:",opts:["A class creates its own dependencies","Dependencies are provided from outside the class","Classes cannot have dependencies","Using static methods only"],ans:1,exp:"Step 1: Dependency Injection (DI) = pass dependencies into a class\n  rather than having the class create them internally.\nStep 2: Example: pass a Database object via constructor instead of\n  the class calling new Database() inside.\nStep 3: Benefits: easier testing (mock dependencies), looser coupling.\nStep 4: Follows the Dependency Inversion Principle (DIP).\n\nAnswer: Dependencies are provided from outside the class"},
+
+  // ML - new gap fillers
+  {id:"q-3944",cat:"ml",diff:"medium",q:"In gradient descent, weights are updated by: w = w - alpha * (gradient). What is alpha?",opts:["Learning rate","Momentum","Batch size","Activation"],ans:0,exp:"Step 1: Gradient descent update rule: w = w - alpha * dL/dw\nStep 2: alpha (learning rate) controls the step size.\n  - Too small: slow convergence\n  - Too large: may overshoot and diverge\nStep 3: Typical values: 0.001 to 0.1\n\nAnswer: alpha is the learning rate"},
+  {id:"q-3945",cat:"ml",diff:"easy",q:"Overfitting means the model:",opts:["Performs well on both train and test","Performs well on train but poorly on test","Performs poorly on both","Has no parameters"],ans:1,exp:"Overfitting = model memorizes training data including noise.\n  High accuracy on training set, low accuracy on unseen test data.\nCauses: too complex model, too few training examples, no regularization.\nFixes: regularization, dropout, more data, early stopping."},
+
+  // DL - new gap fillers
+  {id:"q-3946",cat:"dl",diff:"medium",q:"A convolutional layer with 32 filters of size 3x3 applied to a 28x28x1 input produces output of size:",opts:["28x28x32","26x26x32","28x28x1","26x26x1"],ans:1,exp:"Step 1: Output spatial size with no padding, stride 1:\n  H_out = H_in - kernel_size + 1 = 28 - 3 + 1 = 26\n  W_out = W_in - kernel_size + 1 = 28 - 3 + 1 = 26\nStep 2: Number of output channels = number of filters = 32.\nStep 3: Output shape = 26 x 26 x 32\n\nAnswer: 26x26x32"},
+
+  // NLP - new gap filler
+  {id:"q-3947",cat:"nlp",diff:"easy",q:"Tokenization is the process of:",opts:["Splitting text into smaller units (tokens)","Translating text","Removing stopwords only","Converting audio to text"],ans:0,exp:"Tokenization = breaking text into words, subwords, or characters.\nExample: \"I love AI\" -> [\"I\", \"love\", \"AI\"]\nThis is the first step in most NLP pipelines.\nTypes: word-level, subword (BPE), character-level."},
+
+  // LLM - new gap filler
+  {id:"q-3948",cat:"llm",diff:"medium",q:"In the Transformer architecture, self-attention computes:",opts:["A weighted sum of all values based on query-key similarity","Only the current token","A random subset of tokens","The difference between adjacent tokens"],ans:0,exp:"Step 1: Self-attention formula: Attention(Q,K,V) = softmax(QK^T / sqrt(d_k)) * V\nStep 2: QK^T computes similarity between each query and all keys.\nStep 3: softmax converts similarities to weights (sum to 1).\nStep 4: Weighted sum of V gives the output.\n  Each position attends to ALL positions, weighted by relevance.\n\nAnswer: Weighted sum of all values based on query-key similarity"},
+];
+
+
+// ===== CURATED MOCK TESTS =====
+// Each test: 80 questions, 60 minutes, hand-picked for the GIKI exam.
+// Tests A and B overlap on ~20 must-know questions, ~60 unique each = ~140 unique total.
+var MOCK_TESTS = [
+  {
+    id: "exam-a",
+    title: "Exam Practice A",
+    desc: "80 questions, 60 min. Balanced coverage of all exam topics.",
+    questions: [
+      // === MATH (14) ===
+      "q-0000","q-0001","q-0003","q-0005","q-0006","q-0007","q-0010","q-0011",
+      "q-0015","q-0017","q-0018","q-0023","q-3922","q-3924",
+      // === LINEAR ALGEBRA (12) ===
+      "q-1000","q-1001","q-1002","q-1003","q-1005","q-1007","q-1008","q-1013",
+      "q-3900","q-3901","q-3926","q-3930",
+      // === CALCULUS (12) ===
+      "q-1100","q-1101","q-1102","q-1103","q-1104","q-1105","q-1106","q-1108",
+      "q-3905","q-3907","q-3909","q-3933",
+      // === PROGRAMMING (10) ===
+      "q-1300","q-1301","q-1302","q-1306","q-1307","q-3916","q-3917","q-3936","q-3940",
+      "q-3938",
+      // === OOP (10) ===
+      "q-1400","q-1401","q-1402","q-1403","q-1407","q-1413","q-1414",
+      "q-3919","q-3941","q-3943",
+      // === ML (8) ===
+      "q-1500","q-1501","q-1502","q-1503","q-1508","q-1511","q-1519","q-3944",
+      // === DL (6) ===
+      "q-1600","q-1601","q-1602","q-1603","q-1606","q-3946",
+      // === NLP (4) ===
+      "q-1700","q-1701","q-1702","q-3947",
+      // === LLM (4) ===
+      "q-1800","q-1801","q-1802","q-3948",
+    ]
+  },
+  {
+    id: "exam-b",
+    title: "Exam Practice B",
+    desc: "80 questions, 60 min. Different angle - more calc/LA depth, tougher questions.",
+    questions: [
+      // === MATH (14) ===
+      "q-0002","q-0004","q-0008","q-0009","q-0012","q-0013","q-0016","q-0019",
+      "q-0020","q-0021","q-0026","q-0027","q-3923","q-3925",
+      // === LINEAR ALGEBRA (12) ===
+      "q-1004","q-1006","q-1009","q-1010","q-1011","q-1012","q-3000","q-3001",
+      "q-3902","q-3903","q-3927","q-3928",
+      // === CALCULUS (12) ===
+      "q-1107","q-1109","q-1110","q-1111","q-1112","q-1115","q-1116",
+      "q-3906","q-3908","q-3911","q-3914","q-3934",
+      // === PROGRAMMING (10) ===
+      "q-1303","q-1304","q-1305","q-1308","q-1309","q-1310","q-3917","q-3918",
+      "q-3937","q-3939",
+      // === OOP (10) ===
+      "q-1404","q-1405","q-1406","q-1408","q-1409","q-1415","q-3920",
+      "q-3942","q-3943","q-1416",
+      // === ML (8) ===
+      "q-1504","q-1505","q-1506","q-1507","q-1510","q-1515","q-1520","q-3945",
+      // === DL (6) ===
+      "q-1604","q-1605","q-1607","q-1608","q-1610","q-1611",
+      // === NLP (4) ===
+      "q-1703","q-1704","q-1705","q-1706",
+      // === LLM (4) ===
+      "q-1803","q-1804","q-1805","q-1806",
+    ]
+  }
 ];
 
 

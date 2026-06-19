@@ -80,6 +80,57 @@ function shuffleQOpts(q) {
   };
 }
 
+// --- Mock test resume: save/restore to localStorage ---
+var MOCK_RESUME_KEY = "giki-mock-resume";
+
+function saveMockResume() {
+  if (!mockState || mockState._submitted) return;
+  const data = {
+    title: mockState._title || "Custom Mock",
+    startedAt: mockState.startedAt,
+    seconds: mockState.seconds,
+    idx: mockState.idx,
+    selected: mockState.selected,
+    flagged: Array.from(mockState.flagged),
+    qs: mockState.qs.map(q => ({ id: q.id, cat: q.cat, diff: q.diff, q: q.q, opts: q.opts, ans: q.ans, exp: q.exp, tricky: q.tricky })),
+  };
+  try { localStorage.setItem(MOCK_RESUME_KEY, JSON.stringify(data)); } catch(_) {}
+}
+
+function clearMockResume() {
+  try { localStorage.removeItem(MOCK_RESUME_KEY); } catch(_) {}
+}
+
+function loadMockResume() {
+  try {
+    const raw = localStorage.getItem(MOCK_RESUME_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch(_) { return null; }
+}
+
+function restoreMockResume() {
+  const data = loadMockResume();
+  if (!data) { toast("No saved test found"); return; }
+  mockState = {
+    qs: data.qs,
+    idx: data.idx,
+    selected: data.selected || {},
+    submitted: {},
+    flagged: new Set(data.flagged || []),
+    startedAt: data.startedAt,
+    seconds: data.seconds,
+    count: data.qs.length,
+    requested: data.qs.length,
+    _title: data.title,
+  };
+  document.querySelector(".mock-setup").style.display = "none";
+  renderMock();
+  startMockTimer();
+  toast("Test resumed — keep going!");
+}
+
+
 // =============================================================
 // Tabs
 // =============================================================
@@ -1039,6 +1090,7 @@ document.getElementById("mock-start").addEventListener("click", () => {
     startedAt: Date.now(), seconds: minutes * 60, count: pool.length,
     requested, _title: "Custom Mock",
   };
+  document.querySelector(".mock-setup").style.display = "none";
   renderMock();
   startMockTimer();
 });
@@ -1066,12 +1118,44 @@ function startExamPractice(testId) {
     startedAt: Date.now(), seconds: minutes * 60, count: shuffled.length,
     requested: shuffled.length, _title: test.title,
   };
+  document.querySelector(".mock-setup").style.display = "none";
   renderMock();
   startMockTimer();
 }
 
 document.getElementById("mock-exam-a").addEventListener("click", () => startExamPractice("exam-a"));
 document.getElementById("mock-exam-b").addEventListener("click", () => startExamPractice("exam-b"));
+
+// --- Resume test ---
+document.getElementById("mock-resume").addEventListener("click", restoreMockResume);
+document.getElementById("mock-resume-discard").addEventListener("click", () => {
+  if (confirm("Discard the saved test? This cannot be undone.")) {
+    clearMockResume();
+    updateResumeButton();
+  }
+});
+
+function updateResumeButton() {
+  const data = loadMockResume();
+  const btn = document.getElementById("mock-resume");
+  const discard = document.getElementById("mock-resume-discard");
+  if (!btn || !discard) return;
+  if (data) {
+    btn.style.display = "";
+    discard.style.display = "";
+    const answered = Object.keys(data.selected || {}).length;
+    const timeLeft = data.seconds || 0;
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    btn.textContent = `Resume Test — ${data.title} (${answered}/${data.qs.length} answered, ${m}:${String(s).padStart(2,"0")} left)`;
+  } else {
+    btn.style.display = "none";
+    discard.style.display = "none";
+  }
+}
+// Check for resume on page load and when mock tab is shown
+document.querySelector('.tab[data-tab="mock"]').addEventListener("click", updateResumeButton);
+window.addEventListener("DOMContentLoaded", updateResumeButton);
 
 function startMockTimer() {
   clearInterval(mockTimer);
@@ -1153,13 +1237,6 @@ function renderMock() {
     renderMock();
   });
   area.querySelector("#submit-mock").addEventListener("click", () => {
-    // #16: confirm before finalizing, especially if many questions are unanswered.
-    const unanswered = mockState.qs.filter(q => mockState.selected[q.id] === undefined).length;
-    if (unanswered > 0) {
-      if (!confirm(`You have ${unanswered} unanswered question(s). Submit anyway? Skipped questions count as wrong.`)) return;
-    } else {
-      if (!confirm("Submit the test? You won't be able to change answers after this.")) return;
-    }
     submitMock();
   });
 
@@ -1176,6 +1253,7 @@ function renderMock() {
   });
 
   renderTimer();
+  saveMockResume();
 }
 
 function submitMock() {
@@ -1183,6 +1261,7 @@ function submitMock() {
   if (mockState._submitted) return; // #18: guard against double-submit
   mockState._submitted = true;
   clearInterval(mockTimer);
+  clearMockResume();
   const area = document.getElementById("mock-area");
   let right = 0, wrong = 0, skipped = 0, xpGained = 0;
   // #8: per-category breakdown
@@ -1290,7 +1369,9 @@ function submitMock() {
   });
   area.querySelector("#mrestart").addEventListener("click", () => {
     mockState = null;
+    clearMockResume();
     document.getElementById("mock-area").innerHTML = "";
+    document.querySelector(".mock-setup").style.display = "";
     renderMockHistory();
   });
 }

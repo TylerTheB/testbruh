@@ -161,6 +161,7 @@ function switchTab(id) {
   if (id === "learn") renderLearn();
   if (id === "topics") renderTopics();
   if (id === "cheatsheet") renderCheatsheet();
+  if (id === "revision") renderRevision();
   if (id === "review") renderReview();
   if (id === "progress") renderProgress();
   if (id === "practice" && !document.getElementById("practice-area").dataset.started) {
@@ -328,6 +329,26 @@ function renderTopics() {
 }
 document.getElementById("topics-search")?.addEventListener("input", renderTopics);
 document.getElementById("topics-expand")?.addEventListener("change", renderTopics);
+
+// =============================================================
+// QUICK REVISION — 30-min last-minute notes
+// =============================================================
+function renderRevision() {
+  const list = document.getElementById("revision-list");
+  if (!list) return;
+  if (list.dataset.built) return; // build once
+  list.dataset.built = "1";
+  list.innerHTML = (typeof QUICK_REVISION !== "undefined" ? QUICK_REVISION : []).map(sec => {
+    const pts = sec.points.map(p => `<li>${latex.renderString(p) || p}</li>`).join("");
+    return `<div class="qcard" style="border-left:4px solid ${sec.color}">
+      <div class="qhead">
+        <span class="qbadge" style="background:${sec.color}">⏱ ${sec.time}</span>
+      </div>
+      <h3 style="margin:6px 0">${sec.title}</h3>
+      <ul style="margin:0;padding-left:20px;line-height:1.7;font-size:14px">${pts}</ul>
+    </div>`;
+  }).join("");
+}
 
 // =============================================================
 // CHEATSHEET — reference tables per subject

@@ -1183,6 +1183,148 @@ var MOCK_TESTS = [
   }
 ];
 
+// ===== QUICK REVISION (30-minute last-minute notes) =====
+// Only the highest-yield content. Math/LA/calc emphasized per test summary.
+var QUICK_REVISION = [
+  {
+    title: "📐 Linear Algebra (vector/matrix mult, vector spaces)",
+    time: "6 min",
+    color: "#2196f3",
+    points: [
+      "Matrix mult: (m×n)(n×p) = m×p. Inner dims MUST match, outer dims are the result.",
+      "AB ≠ BA in general. Even if both exist, results differ. NEVER assume commutative.",
+      "Vector dot product: u·v = Σuᵢvᵢ. Scalar result. Zero ⟺ orthogonal (perpendicular).",
+      "Matrix-vector: Av. Each row of A dots with v. Shape (m×n)(n×1) = m×1.",
+      "Identity matrix I: AI = IA = A. Leaves everything unchanged.",
+      "Transpose: Aᵀ flips rows↔cols. (AB)ᵀ = BᵀAᵀ (order flips).",
+      "AᵀA is always symmetric. For a column vector v, vᵀv is a scalar = |v|².",
+      "Determinant: det(A)≠0 ⟺ invertible. det(AB)=det(A)·det(B). det(Aᵀ)=det(A).",
+      "det(cA) = cⁿ·det(A) for n×n. (Scaling all n rows.)",
+      "Eigenvalues: Av=λv. det = product of λ's. trace = sum of λ's.",
+      "If A has eigenvalue λ, then A² has λ², A⁻¹ has 1/λ, A+kI has λ+k.",
+      "Rank-nullity: rank(A) + nullity(A) = n (number of COLUMNS). Free variables = nullity.",
+      "Vector space / subspace test: must contain 0, closed under +, closed under scalar mult.",
+      "Subspace example: {x : x₁+x₂+x₃=0} ✓ (plane through origin). {x : x+y=1} ✗ (no zero).",
+      "Span of vectors = all linear combinations. Basis = independent + spanning. Dimension = #basis vectors.",
+      "Column space = span of columns. Row space = span of rows. rank = dimension of column space = dimension of row space.",
+    ]
+  },
+  {
+    title: "∫ Calculus (derivatives, chain rule)",
+    time: "6 min",
+    color: "#4caf50",
+    points: [
+      "Power rule: d/dx xⁿ = n·xⁿ⁻¹. Constant: d/dx c = 0.",
+      "d/dx eˣ = eˣ. d/dx ln(x) = 1/x. d/dx aˣ = aˣ·ln(a).",
+      "d/dx sin = cos. d/dx cos = -sin. d/dx tan = sec². d/dx sec = sec·tan.",
+      "Product rule: (fg)' = f'g + fg'. Quotient: (f/g)' = (f'g − fg')/g².",
+      "CHAIN RULE (most tested): d/dx f(g(x)) = f'(g(x))·g'(x). Multiply derivatives inside-out.",
+      "Chain examples: d/dx sin(x²) = 2x·cos(x²). d/dx e^(3x) = 3e^(3x). d/dx ln(x²+1) = 2x/(x²+1).",
+      "Nested chain: d/dx e^(sin(2x)) = e^(sin(2x))·cos(2x)·2. Every layer contributes a factor.",
+      "Implicit diff: differentiate both sides w.r.t. x, treating y as function of x. Solve for dy/dx.",
+      "Implicit example: x²+y²=25 → 2x + 2y·y' = 0 → y' = -x/y.",
+      "Logarithmic diff: for x^x or products of powers, take ln first, then differentiate.",
+      "x^x: ln y = x ln x → y'/y = ln x + 1 → y' = x^x(ln x + 1).",
+      "Second derivative f''(x): differentiate f'(x) again. f''>0 = concave up (min), f''<0 = concave down (max).",
+      "Critical points: set f'(x)=0. Classify with f'': f''>0 → local min, f''<0 → local max.",
+      "L'Hôpital: for 0/0 or ∞/∞ limits, take derivative of top AND bottom separately, then re-evaluate.",
+      "lim(x→0) sin(x)/x = 1. (Fundamental limit. Confirm via L'Hôpital: cos(x)/1 → 1.)",
+      "Integrals (anti-derivatives): ∫xⁿ dx = xⁿ⁺¹/(n+1) + C. ∫eˣ dx = eˣ+C. ∫(1/x)dx = ln|x|+C.",
+      "∫sin = -cos. ∫cos = sin. Definite integral ∫ₐᵇ f = F(b) − F(a) where F'=f.",
+      "U-substitution: ∫2x·cos(x²)dx, let u=x², du=2x dx → ∫cos(u)du = sin(u)+C = sin(x²)+C.",
+      "Integration by parts: ∫u dv = uv − ∫v du. Use for ∫x·eˣ, ∫x·ln(x), ∫x·sin(x).",
+    ]
+  },
+  {
+    title: "🔢 Basic Maths (sets, trig, logs, logic)",
+    time: "5 min",
+    color: "#ff9800",
+    points: [
+      "Sets: A∪B = or, A∩B = both, Aᶜ = not in A. |A∪B| = |A|+|B|−|A∩B|.",
+      "Power set of n-element set has 2ⁿ subsets. Set with n elements has n! permutations.",
+      "Logic: P→Q ≡ ¬P∨Q. False only when P true, Q false. Contrapositive ¬Q→¬P ≡ P→Q.",
+      "De Morgan: ¬(P∧Q) = ¬P∨¬Q. ¬(P∨Q) = ¬P∧¬Q.",
+      "∀ = 'for all', ∃ = 'there exists'. Negation flips: ¬∀x P(x) ≡ ∃x ¬P(x).",
+      "Pythagorean: sin²θ + cos²θ = 1. Also: 1+tan²θ = sec²θ, 1+cot²θ = csc²θ.",
+      "Unit circle values: sin(0)=0, sin(30°)=1/2, sin(45°)=√2/2, sin(60°)=√3/2, sin(90°)=1.",
+      "cos mirrors sin: cos(0)=1, cos(30°)=√3/2, cos(45°)=√2/2, cos(60°)=1/2, cos(90°)=0.",
+      "Reciprocals: csc=1/sin, sec=1/cos, cot=1/tan. tan=sin/cos.",
+      "Double angle: sin(2θ)=2sinθcosθ. cos(2θ)=1−2sin²θ=2cos²θ−1=cos²θ−sin²θ.",
+      "Log rules: log(xy)=log x+log y, log(xⁿ)=n·log x, log(x/y)=log x − log y.",
+      "log_b(b)=1, log_b(1)=0, b^(log_b x)=x. ln(eˣ)=x.",
+      "Change of base: log_b(x) = log(x)/log(b) = ln(x)/ln(b).",
+      "Combinatorics: C(n,k) = n!/(k!(n−k)!). P(n,k) = n!/(n−k)!. C(n,k)=C(n,n−k).",
+      "Sum 1+2+...+n = n(n+1)/2. Sum 1²+2²+...+n² = n(n+1)(2n+1)/6. Geometric Σarⁱ = a/(1−r) for |r|<1.",
+      "Complex: i²=−1. |a+bi| = √(a²+b²). Conjugate of a+bi is a−bi. Euler: e^(iπ)=−1.",
+    ]
+  },
+  {
+    title: "💻 Programming basics",
+    time: "4 min",
+    color: "#9c27b0",
+    points: [
+      "Big-O (common): O(1) hash/array index; O(log n) binary search; O(n) linear scan; O(n log n) merge sort; O(n²) nested loops; O(2ⁿ) naive Fibonacci.",
+      "Nested loops (i over n, j over n) = O(n²). If inner is range(i) → total = n(n−1)/2 = O(n²).",
+      "Lists: append O(1) amortized, insert at front O(n), index O(1). Slice list[a:b] includes a, excludes b.",
+      "Mutable default arg trap: def f(x, lst=[]) — lst persists across calls! Use lst=None instead.",
+      "Assignment by reference: y=x (same object). y.append mutates x too. Copy with y=list(x) or x[:].",
+      "Dict: O(1) avg lookup/insert. Set: unique elements, O(1) lookup. len({1,2,2,3}) = 3.",
+      "Stack = LIFO (last in, first out). Queue = FIFO (first in, first out).",
+      "Recursion: needs base case. fact(n) = n·fact(n−1), fact(0)=1. Time = O(n), space = O(n) stack.",
+      "Binary search: O(log n) on SORTED array. Halves each step.",
+      "Sorting: merge/heap/quick(avg) = O(n log n). Bubble/selection/insertion = O(n²).",
+      "Two pointers / sliding window / prefix sums: all O(n) techniques.",
+      "String methods: split() → list (whitespace), join, upper/lower, len, replace.",
+    ]
+  },
+  {
+    title: "🏛️ OOP",
+    time: "4 min",
+    color: "#00bcd4",
+    points: [
+      "4 Pillars: Encapsulation (bundle data+methods), Abstraction (hide impl), Inheritance (reuse), Polymorphism (one call, many behaviors).",
+      "Polymorphism types: subtype (overriding), parametric (generics List<T>), ad-hoc (overloading).",
+      "SOLID: S=Single Responsibility, O=Open/Closed (open to extend, closed to modify), L=Liskov Substitution, I=Interface Segregation, D=Dependency Inversion.",
+      "LSP: subtype must be substitutable. Classic violation: Square extends Rectangle (width/height coupled).",
+      "Inheritance = IS-A. Composition = HAS-A. Prefer composition — flexible, runtime-swappable, looser coupling.",
+      "Abstract class: cannot be instantiated, may have abstract methods. Subclass must implement them.",
+      "Interface: pure contract, no implementation (in Java). A class can implement many interfaces.",
+      "Method overriding: child redefines parent method. Called on object's actual type (dynamic dispatch).",
+      "Method overloading: same name, different params, same class. Resolved at compile time.",
+      "Design patterns: Singleton (one instance), Factory (encapsulate creation), Observer (notify on change), Strategy (swap algorithms), Decorator (add behavior via wrapping).",
+      "UML: solid arrow ▲ = inheritance. Diamond ◆ = aggregation (weak has-a), filled ◆ = composition (owns lifecycle).",
+      "Encapsulation via private/protected/public. Law of Demeter: only talk to immediate friends.",
+    ]
+  },
+  {
+    title: "🤖 ML / DL / NLP / LLM essentials",
+    time: "5 min",
+    color: "#f44336",
+    points: [
+      "Supervised = labeled (x,y). Unsupervised = find patterns/clusters. Reinforcement = rewards.",
+      "Regression predicts continuous; Classification predicts discrete labels.",
+      "Linear regression loss = MSE = (1/n)Σ(y−ŷ)². Closed form: w = (XᵀX)⁻¹Xᵀy.",
+      "Logistic regression: classification via sigmoid. Loss = cross-entropy.",
+      "Regularization: L2 (Ridge) shrinks weights, L1 (Lasso) → sparsity (zeros some weights).",
+      "Bias-variance: total error = bias² + variance + noise. Underfit = high bias (too simple). Overfit = high variance (too complex).",
+      "Diagnose: high train error + high test error = UNDERFIT → use more complex model. Low train + high test = OVERFIT → regularize/more data.",
+      "Gradient descent: w ← w − α·∂L/∂w. α = learning rate. Too big → diverge, too small → slow.",
+      "k-NN = lazy learner, no training. k-Means minimizes within-cluster sum of squares.",
+      "Decision trees split on information gain / Gini. Random forest = bagging of trees. XGBoost = gradient boosting.",
+      "PCA = max variance directions (eigenvectors of covariance). t-SNE = non-linear visualization.",
+      "Metrics: Accuracy, Precision=TP/(TP+FP), Recall=TP/(TP+FN), F1=2PR/(P+R) (harmonic mean).",
+      "Neural net: perceptron = weighted sum + activation. MLP = stacked layers with nonlinear activations.",
+      "Backprop = chain rule to compute gradients. ReLU = max(0,x), avoids vanishing gradient vs sigmoid.",
+      "CNN: convolution + pooling. Output size = (W − K + 1) per dim (no padding, stride 1). #output channels = #filters.",
+      "RNN/LSTM: sequential data, hidden state. Attention/Transformer replaced RNN for sequences.",
+      "NLP pipeline: tokenize → embed → model. Tokenization splits text into words/subwords/chars.",
+      "Word2Vec: similar words have similar vectors (distributional hypothesis: similar context). king−man+woman≈queen.",
+      "Transformer self-attention: Attention(Q,K,V) = softmax(QKᵀ/√dₖ)·V. Each token attends to ALL tokens.",
+      "LLM terms: pretraining (next-token prediction), fine-tuning (task-specific), prompting, hallucination (confident wrong output), context window.",
+    ]
+  }
+];
+
 
 var CHEATSHEETS = {
   math: {

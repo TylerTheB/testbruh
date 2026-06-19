@@ -1263,6 +1263,13 @@ function submitMock() {
   clearInterval(mockTimer);
   clearMockResume();
   const area = document.getElementById("mock-area");
+  // Show grading indicator immediately so the UI doesn't freeze
+  area.innerHTML = `<div class="qcard" style="text-align:center;padding:40px"><b>Grading...</b></div>`;
+  // Defer the heavy scoring work so the browser can render the indicator first
+  setTimeout(() => _doSubmitMock(area), 30);
+}
+
+function _doSubmitMock(area) {
   let right = 0, wrong = 0, skipped = 0, xpGained = 0;
   // #8: per-category breakdown
   const byCat = {};
@@ -1316,6 +1323,8 @@ function submitMock() {
   saveState();
   updateHeader();
 
+  const total = mockState.qs.length;
+
   // Save mock result to history
   const mockResult = {
     date: new Date().toISOString(),
@@ -1328,8 +1337,6 @@ function submitMock() {
   mockHistory.unshift(mockResult);
   if (mockHistory.length > 50) mockHistory.length = 50; // keep last 50
   localStorage.setItem("giki-mock-history", JSON.stringify(mockHistory));
-
-  const total = mockState.qs.length;
 
   // #8: render per-category breakdown table
   const catRows = Object.entries(byCat)

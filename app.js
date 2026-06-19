@@ -886,6 +886,38 @@ function buildMockCategoryChips() {
   wrap.dataset.built = "1";
 }
 
+function renderMockHistory() {
+  const el = document.getElementById("mock-history");
+  if (!el) return;
+  if (mockState) { el.innerHTML = ""; return; } // hide during active test
+  const history = JSON.parse(localStorage.getItem("giki-mock-history") || "[]");
+  if (!history.length) { el.innerHTML = ""; return; }
+  const rows = history.slice(0, 20).map((r, i) => {
+    const pct = Math.round(100 * r.right / Math.max(1, r.total));
+    const date = new Date(r.date);
+    const dateStr = date.toLocaleDateString() + " " + date.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+    const timeUsed = r.timeUsed ? Math.floor(r.timeUsed/60) + "m " + (r.timeUsed%60) + "s" : "";
+    return `<div class="row" style="align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border,rgba(255,255,255,0.08))">
+      <div style="min-width:60px"><b style="font-size:18px;color:${pct>=80?'var(--success,#4caf50)':pct>=50?'var(--accent,#ff9800)':'var(--danger,#f44336)'}">${pct}%</b></div>
+      <div style="flex:1">
+        <div style="font-weight:600">${r.title || "Mock Test"}</div>
+        <div style="font-size:12px;color:var(--muted,#888)">${r.right}/${r.total} right • ${r.wrong} wrong • ${r.skipped} skipped • ${timeUsed}</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted,#888);text-align:right">${dateStr}</div>
+    </div>`;
+  }).join("");
+  el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <span style="font-size:14px;font-weight:600">Recent Mock Results</span>
+    <button id="mock-history-clear" style="font-size:12px;color:var(--muted,#888);background:none;border:none;cursor:pointer;text-decoration:underline">Clear all</button>
+  </div>${rows}`;
+  document.getElementById("mock-history-clear").addEventListener("click", () => {
+    if (confirm("Clear all mock history? This cannot be undone.")) {
+      localStorage.removeItem("giki-mock-history");
+      renderMockHistory();
+    }
+  });
+}
+
 function getMockCategorySelection() {
   const wrap = document.getElementById("mock-cats");
   const labels = wrap.querySelectorAll(".mock-cat");
@@ -934,8 +966,10 @@ document.getElementById("mock-cat-preset").addEventListener("click", () => {
 
 // Build chips lazily when the mock panel is shown
 document.querySelector('.tab[data-tab="mock"]').addEventListener("click", buildMockCategoryChips);
+document.querySelector('.tab[data-tab="mock"]').addEventListener("click", renderMockHistory);
 // Also try once on first load in case user starts on another tab
 window.addEventListener("DOMContentLoaded", buildMockCategoryChips);
+window.addEventListener("DOMContentLoaded", renderMockHistory);
 
 document.getElementById("mock-start").addEventListener("click", () => {
   const count = +document.getElementById("mock-count").value;
@@ -985,7 +1019,7 @@ document.getElementById("mock-start").addEventListener("click", () => {
   mockState = {
     qs: pool, idx: 0, selected: {}, submitted: {}, flagged: new Set(),
     startedAt: Date.now(), seconds: minutes * 60, count: pool.length,
-    requested,
+    requested, _title: "Custom Mock",
   };
   renderMock();
   startMockTimer();
@@ -1011,7 +1045,7 @@ function startExamPractice(testId) {
   mockState = {
     qs: pool, idx: 0, selected: {}, submitted: {}, flagged: new Set(),
     startedAt: Date.now(), seconds: minutes * 60, count: pool.length,
-    requested: pool.length,
+    requested: pool.length, _title: test.title,
   };
   renderMock();
   startMockTimer();
@@ -1183,6 +1217,20 @@ function submitMock() {
   // we don't zero an already-zero streak.
   saveState();
   updateHeader();
+
+  // Save mock result to history
+  const mockResult = {
+    date: new Date().toISOString(),
+    title: mockState._title || "Custom Mock",
+    total, right, wrong, skipped, xpGained,
+    byCat,
+    timeUsed: Math.round((Date.now() - mockState.startedAt) / 1000),
+  };
+  const mockHistory = JSON.parse(localStorage.getItem("giki-mock-history") || "[]");
+  mockHistory.unshift(mockResult);
+  if (mockHistory.length > 50) mockHistory.length = 50; // keep last 50
+  localStorage.setItem("giki-mock-history", JSON.stringify(mockHistory));
+
   const total = mockState.qs.length;
 
   // #8: render per-category breakdown table
@@ -1224,6 +1272,7 @@ function submitMock() {
   area.querySelector("#mrestart").addEventListener("click", () => {
     mockState = null;
     document.getElementById("mock-area").innerHTML = "";
+    renderMockHistory();
   });
 }
 

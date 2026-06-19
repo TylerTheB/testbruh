@@ -15,7 +15,7 @@ function tryRender(label, text) {
   while ((m = segReG.exec(text)) !== null) {
     const math = m[1];
     try {
-      katex.renderToString(math, { throwOnError: true, strict: 'ignore' });
+      katex.renderToString(math, { throwOnError: true, strict: true });
     } catch (e) {
       errors.push({ label, math, msg: e.message });
     }

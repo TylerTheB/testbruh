@@ -13,6 +13,12 @@
     })[c]);
   }
 
+  function unescapeHtml(s) {
+    return s.replace(/&amp;|&lt;|&gt;|&quot;|&#39;/g, c => ({
+      "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&#39;": "'"
+    })[c]);
+  }
+
   function renderMath(tex, displayMode) {
     if (typeof katex === "undefined") return null;
     try {
@@ -33,11 +39,11 @@
     // Process block first, then inline.
     let html = escapeHtml(text);
     html = html.replace(DELIM_BLOCK, (_, tex) => {
-      const r = renderMath(tex.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">"), true);
+      const r = renderMath(unescapeHtml(tex), true);
       return r !== null ? r : `<pre>${tex}</pre>`;
     });
     html = html.replace(DELIM_INLINE, (_, prefix, tex) => {
-      const r = renderMath(tex.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">"), false);
+      const r = renderMath(unescapeHtml(tex), false);
       return r !== null ? `${prefix}${r}` : `${prefix}<code>${tex}</code>`;
     });
     return html;

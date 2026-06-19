@@ -1125,6 +1125,7 @@ function startExamPractice(testId) {
 
 document.getElementById("mock-exam-a").addEventListener("click", () => startExamPractice("exam-a"));
 document.getElementById("mock-exam-b").addEventListener("click", () => startExamPractice("exam-b"));
+document.getElementById("mock-exam-c").addEventListener("click", () => startExamPractice("exam-c"));
 
 // --- Resume test ---
 document.getElementById("mock-resume").addEventListener("click", restoreMockResume);

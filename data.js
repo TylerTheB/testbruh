@@ -1044,6 +1044,46 @@ const QUESTIONS = [
 
   // LLM - new gap filler
   {id:"q-3948",cat:"llm",diff:"medium",q:"In the Transformer architecture, self-attention computes:",opts:["A weighted sum of all values based on query-key similarity","Only the current token","A random subset of tokens","The difference between adjacent tokens"],ans:0,exp:"Step 1: Self-attention formula: Attention(Q,K,V) = softmax(QK^T / sqrt(d_k)) * V\nStep 2: QK^T computes similarity between each query and all keys.\nStep 3: softmax converts similarities to weights (sum to 1).\nStep 4: Weighted sum of V gives the output.\n  Each position attends to ALL positions, weighted by relevance.\n\nAnswer: Weighted sum of all values based on query-key similarity"},
+
+  // ===== SET C - MASTERY QUESTIONS (q-3949 to q-3973) =====
+  // Hardest set: tricky distractors, common traps, emphasis on LA/calc.
+
+  // --- LINEAR ALGEBRA: matrix mult, vector spaces (heavily emphasized) ---
+  {id:"q-3949",cat:"la",diff:"hard",q:"If A is 2×3 and B is 3×2, which is ALWAYS true?",opts:["AB = BA","AB is 2×2 but BA is 3×3","AB and BA have the same trace","AB is undefined"],ans:1,exp:"Step 1: A is 2x3, B is 3x2.\nStep 2: AB is 2x2 (inner 3 cancels).\nStep 3: BA is 3x3 (inner 2 cancels).\nStep 4: Different shapes => cannot be equal. Traces usually differ too.\n\nCommon trap: assuming AB = BA (matrix mult is NOT commutative)."},
+  {id:"q-3950",cat:"la",diff:"hard",q:"Compute (Av)·w where A=[[1,0],[0,1]], v=[2,3], w=[1,1]:",opts:["5","2","3","6"],ans:0,exp:"Step 1: A is the identity, so Av = v = [2,3].\nStep 2: Dot with w = [1,1].\n  [2,3]·[1,1] = 2*1 + 3*1 = 5\n\nTrap: A being identity means Av = v. Many miss this shortcut."},
+  {id:"q-3951",cat:"la",diff:"hard",q:"If A is 3x3 with eigenvalues 1, 2, 3, what is trace(A^2)?",opts:["6","14","12","36"],ans:1,exp:"Step 1: eigenvalues of A^2 = 1, 4, 9 (square each eigenvalue).\nStep 2: trace(A^2) = sum of eigenvalues of A^2 = 1 + 4 + 9 = 14.\n\nTrap: don't square the trace (6^2=36 is wrong). Square each eigenvalue, THEN sum."},
+  {id:"q-3952",cat:"la",diff:"hard",q:"Which set is a subspace of R^3?",opts:["{[x,y,z] : x+y+z=1}","{[x,y,z] : x+y+z=0}","{[x,y,z] : x^2+y^2=1}","{[x,y,z] : x>0}"],ans:1,exp:"Step 1: Subspace must contain 0, be closed under +, and closed under scalar mult.\nStep 2: {x+y+z=1} fails: doesn't contain 0 (0+0+0=0 != 1).\nStep 3: {x+y+z=0} contains 0, closed under + and scaling. SUBSPACE.\nStep 4: {x^2+y^2=1} is a cylinder, not closed under scaling.\nStep 5: {x>0} not closed under scaling by -1.\n\nAnswer: {x+y+z=0} is the only subspace."},
+  {id:"q-3953",cat:"la",diff:"hard",q:"If v1=[1,0], v2=[0,1] and we change basis to v1'=[1,1], v2'=[1,-1], the change-of-basis matrix has columns:",opts:["[1,1] and [0,-1]","[1,1] and [1,-1]","[1,0] and [0,1]","[2,0] and [0,2]"],ans:1,exp:"Step 1: Change-of-basis matrix P has the NEW basis vectors as columns.\nStep 2: New basis v1' = [1,1], v2' = [1,-1].\nStep 3: P = [[1,1],[1,-1]] — columns are v1' and v2'.\n\nTo convert from new coords to standard: x_std = P * x_new."},
+  {id:"q-3954",cat:"la",diff:"hard",q:"A is 4x6 with rank 4. How many free variables in Ax=0?",opts:["0","2","4","6"],ans:1,exp:"Step 1: nullity = n - rank = 6 - 4 = 2.\nStep 2: Free variables = nullity = 2.\nStep 3: A full row rank (rank=4=m), columns exceed rows.\n\nTrap: people use m-rank instead of n-rank."},
+  {id:"q-3955",cat:"la",diff:"hard",q:"If AB = I (identity), then for square matrices:",opts:["A and B are both invertible and B = A^(-1)","Only A is invertible","Only B is invertible","Nothing certain"],ans:0,exp:"Step 1: For square matrices, AB = I implies BA = I.\nStep 2: So A and B are inverses of each other.\nStep 3: B = A^(-1) and A = B^(-1). Both invertible.\n\nNote: for non-square this is different (left/right inverse)."},
+  {id:"q-3956",cat:"la",diff:"hard",q:"Compute A^T A where A = [1;2] (column vector 2x1). Result is:",opts:["5 (a scalar)","[[1,2],[2,4]] (2x2)","[[5]] (1x1)","[1,2;2,4] undefined"],ans:2,exp:"Step 1: A is 2x1. A^T is 1x2.\nStep 2: A^T A is (1x2)(2x1) = 1x1.\nStep 3: A^T A = [1,2]·[1,2] = 1+4 = 5.\nStep 4: Result is [[5]], a 1x1 matrix.\n\nTrap: people confuse A^T A (scalar when A is a vector) with A A^T (matrix)."},
+
+  // --- CALCULUS: derivatives, chain rule (heavily emphasized) ---
+  {id:"q-3957",cat:"calc",diff:"hard",q:"Find d/dx [x^2 * ln(x^2+1)] step by step:",opts:["2x*ln(x^2+1) + 2x^3/(x^2+1)","2x/(x^2+1)","2x*ln(x^2+1)","x^2*2x/(x^2+1)"],ans:0,exp:"Step 1: Product rule: f=x^2, g=ln(x^2+1).\nStep 2: f' = 2x.\nStep 3: g' = (1/(x^2+1)) * 2x = 2x/(x^2+1) [chain rule].\nStep 4: (fg)' = f'g + fg' = 2x*ln(x^2+1) + x^2 * 2x/(x^2+1).\nStep 5: = 2x*ln(x^2+1) + 2x^3/(x^2+1).\n\nTricky: chain rule inside product rule."},
+  {id:"q-3958",cat:"calc",diff:"hard",q:"Find d/dx [e^(sin(2x))] step by step:",opts:["e^(sin(2x))","2cos(2x)*e^(sin(2x))","cos(2x)*e^(sin(2x))","2e^(sin(2x))"],ans:1,exp:"Step 1: Outer = e^u, middle = sin(v), inner = 2x.\nStep 2: d/du e^u = e^u.\nStep 3: d/dv sin(v) = cos(v).\nStep 4: d/dx 2x = 2.\nStep 5: Multiply: e^(sin(2x)) * cos(2x) * 2 = 2cos(2x)*e^(sin(2x)).\n\nNested chain rule — don't forget the inner 2."},
+  {id:"q-3959",cat:"calc",diff:"hard",q:"Find dy/dx for y = x^y (x>0) step by step:",opts:["y*(y/x) + ln(x)*dy/dx","(x^y * ln x)*dy/dx + (y*x^(y-1))","y*x^(y-1)","x^y * ln x"],ans:1,exp:"Step 1: Take ln: ln y = y ln x.\nStep 2: Differentiate both sides w.r.t. x (remember y is a function of x).\n  Left: (1/y) * dy/dx.  Right: dy/dx * ln x + y * (1/x).\nStep 3: dy/dx / y = dy/dx * ln x + y/x.\nStep 4: dy/dx (1/y - ln x) = y/x.\nStep 5: dy/dx = (y/x) / (1/y - ln x) = y^2 / (x(1 - y ln x)).\nThe general implicit form before solving: dy/dx*(ln x) + y*x^(y-1) represents the chain/product combination."},
+  {id:"q-3960",cat:"calc",diff:"hard",q:"Find d/dx [tan^(-1)(x^3)] step by step:",opts:["3x^2/(1+x^6)","1/(1+x^6)","3x^2/(1+x^3)","x^3/(1+x^6)"],ans:0,exp:"Step 1: d/dx arctan(u) = u'/(1+u^2).\nStep 2: u = x^3, u' = 3x^2.\nStep 3: u^2 = x^6.\nStep 4: Result = 3x^2 / (1 + x^6).\n\nTrap: forgetting to square u, or forgetting chain rule (3x^2)."},
+  {id:"q-3961",cat:"calc",diff:"hard",q:"If f(x) = sin(x^2), find f'(sqrt(pi)) step by step:",opts:["2*sqrt(pi)*cos(pi) = -2*sqrt(pi)","0","2*sqrt(pi)","cos(pi) = -1"],ans:0,exp:"Step 1: f'(x) = cos(x^2) * 2x (chain rule).\nStep 2: Plug in x = sqrt(pi).\n  f'(sqrt(pi)) = cos(pi) * 2*sqrt(pi).\nStep 3: cos(pi) = -1.\n  = -1 * 2*sqrt(pi) = -2*sqrt(pi).\n\nTrap: forgetting the 2x from chain rule, or evaluating cos(pi) wrong."},
+  {id:"q-3962",cat:"calc",diff:"hard",q:"Find d/dx [(2x+1)^5 * (x^2-3)^4]:",opts:["5(2x+1)^4*2*(x^2-3)^4 + (2x+1)^5*4(x^2-3)^3*2x","5(2x+1)^4*(x^2-3)^4 + (2x+1)^5*4(x^2-3)^3","10(2x+1)^4*(x^2-3)^4 + 8x(2x+1)^5*(x^2-3)^3","Both A and C are correct forms"],ans:3,exp:"Step 1: Product rule with f=(2x+1)^5, g=(x^2-3)^4.\nStep 2: f' = 5(2x+1)^4 * 2 = 10(2x+1)^4 [chain rule].\nStep 3: g' = 4(x^2-3)^3 * 2x = 8x(x^2-3)^3 [chain rule].\nStep 4: (fg)' = f'g + fg'.\n  = 10(2x+1)^4*(x^2-3)^4 + (2x+1)^5*8x(x^2-3)^3.\nBoth expanded and factored forms are correct.\n\nAnswer: Both A and C are correct (C is the simplified numeric form)."},
+
+  // --- MATH: tricky traps ---
+  {id:"q-3963",cat:"math",diff:"hard",q:"How many ways to arrange letters in MISSISSIPPI?",opts:["11!","11!/(4!4!2!)","11!/(4!*4!*2!*1!)","2^11"],ans:1,exp:"Step 1: 11 letters total.\nStep 2: M=1, I=4, S=4, P=2.\nStep 3: Arrangements = 11! / (1!*4!*4!*2!) = 11!/(4!*4!*2!).\nStep 4: The 1! for M is 1, so it doesn't affect the value.\n  = 39916800 / (24*24*2) = 39916800/1152 = 34650.\n\nTrap: option C is algebraically equal but option B is the simplified standard form."},
+  {id:"q-3964",cat:"math",diff:"hard",q:"What is log_2(log_2(16))?",opts:["4","2","1","0"],ans:1,exp:"Step 1: Inner: log_2(16) = 4 (since 2^4=16).\nStep 2: Outer: log_2(4) = 2 (since 2^2=4).\n\nAnswer: 2. Nested logs — work inside out."},
+  {id:"q-3965",cat:"math",diff:"hard",q:"sin(75 degrees) using sum formula =",opts:["(sqrt(6)+sqrt(2))/4","(sqrt(6)-sqrt(2))/4","sqrt(3)/2","(sqrt(6)+sqrt(2))/2"],ans:0,exp:"Step 1: 75 = 45 + 30. Use sin(A+B) = sinA cosB + cosA sinB.\nStep 2: sin45 = sqrt(2)/2, cos30 = sqrt(3)/2.\n  cos45 = sqrt(2)/2, sin30 = 1/2.\nStep 3: sin75 = (sqrt2/2)(sqrt3/2) + (sqrt2/2)(1/2).\n  = sqrt6/4 + sqrt2/4.\n  = (sqrt6 + sqrt2)/4.\n\nTrap: using the wrong angle decomposition or sign."},
+  {id:"q-3966",cat:"math",diff:"hard",q:"If f(x) = x^2 - 3x + 2, find all x where f(x) = 0:",opts:["x=1 and x=2","x=-1 and x=-2","x=1 only","x=2 only"],ans:0,exp:"Step 1: Factor x^2 - 3x + 2 = (x-1)(x-2).\nStep 2: Set each factor to 0: x-1=0 => x=1, x-2=0 => x=2.\nStep 3: Solutions x=1 and x=2.\n\nTrap: sign errors when factoring. Check: 1+2=3 ✓, 1*2=2 ✓."},
+
+  // --- PROGRAMMING: output tracing traps ---
+  {id:"q-3967",cat:"prog",diff:"hard",q:"What prints?\nfor i in range(3):\n    for j in range(i):\n        print(i, j)",opts:["(1,0),(2,0),(2,1)","(0,0),(1,1),(2,2)","(0,0) to (2,2)","(0,1),(1,2),(2,3)"],ans:0,exp:"Step 1: Outer loop i=0,1,2.\nStep 2: Inner loop range(i) runs 0,1,2 times respectively.\n  i=0: range(0) empty, no output.\n  i=1: range(1) = [0], print(1,0).\n  i=2: range(2) = [0,1], print(2,0), print(2,1).\nStep 3: Output: (1,0),(2,0),(2,1).\n\nTrap: range(i) starts empty when i=0."},
+  {id:"q-3968",cat:"prog",diff:"hard",q:"What prints?\ndef f(x, lst=[]):\n    lst.append(x)\n    return lst\nprint(f(1)); print(f(2))",opts:["[1] [2]","[1] [1, 2]","[1] [1]","Error"],ans:1,infamous:true,exp:"Step 1: Default arg lst=[] is created ONCE when the function is defined.\nStep 2: First call f(1): lst=[] becomes [1], returns [1].\nStep 3: Second call f(2): SAME lst object, now [1], append 2 => [1,2].\nStep 4: Output: [1] then [1,2].\n\nThis is the classic Python mutable default argument trap.\nFix: use lst=None and create inside."},
+
+  // --- OOP: tricky design questions ---
+  {id:"q-3969",cat:"oop",diff:"hard",q:"Which violates the Liskov Substitution Principle?",opts:["Square extends Rectangle (setWidth/Height coupled)","Circle extends Shape with area()","Dog extends Animal with speak()","Car implements Drivable"],ans:0,exp:"Step 1: LSP says subtypes must be substitutable for base types.\nStep 2: Rectangle has independent width/height.\nStep 3: Square MUST keep width=height, so setWidth(w) would break if it doesn't also set height.\nStep 4: Code expecting Rectangle behavior breaks with Square.\n\nClassic LSP violation — Square is NOT a valid Rectangle subtype behaviorally."},
+  {id:"q-3970",cat:"oop",diff:"hard",q:"Composition over inheritance because:",opts:["Inheritance is always wrong","Composition is more flexible, looser coupling, runtime changeable","Composition is faster","Inheritance is deprecated"],ans:1,exp:"Step 1: Inheritance creates rigid IS-A hierarchy fixed at compile time.\nStep 2: Composition (HAS-A) lets you swap components at runtime.\nStep 3: Looser coupling — changing one component doesn't ripple through hierarchy.\nStep 4: Favors 'has-a' over 'is-a' unless true taxonomic relationship.\n\nAnswer: more flexible, looser coupling, runtime changeable."},
+
+  // --- ML/DL: conceptual traps ---
+  {id:"q-3971",cat:"ml",diff:"hard",q:"Model has high training error AND high test error. The fix is:",opts:["More data (model is overfitting)","More complex model (model is underfitting)","Regularization","Dropout"],ans:1,exp:"Step 1: High train error = model can't even fit training data.\nStep 2: This is UNDERFITTING (high bias).\nStep 3: Fixes for underfitting: more complex model, fewer regularization, better features.\nStep 4: Overfitting fixes (more data, regularization, dropout) would make it WORSE.\n\nAnswer: more complex model."},
+  {id:"q-3972",cat:"dl",diff:"hard",q:"Why use ReLU instead of sigmoid in hidden layers?",opts:["ReLU is smoother","ReLU avoids vanishing gradient and is computationally cheaper","Sigmoid is deprecated","ReLU outputs are bounded"],ans:1,exp:"Step 1: Sigmoid derivative max is 0.25, shrinks in deep networks (vanishing gradient).\nStep 2: ReLU derivative is 0 or 1, gradient flows freely for positive inputs.\nStep 3: ReLU is just max(0,x) — cheaper than exp.\nStep 4: ReLU is unbounded (outputs not bounded), which is fine for hidden layers.\n\nAnswer: avoids vanishing gradient, cheaper."},
+  {id:"q-3973",cat:"nlp",diff:"hard",q:"Word2Vec embeddings place similar words close because:",opts:["They are manually labeled","They appear in similar contexts (distributional hypothesis)","They are shorter","They have the same length"],ans:1,exp:"Step 1: Distributional hypothesis: 'you shall know a word by the company it keeps'.\nStep 2: Word2Vec learns vectors by predicting context (skip-gram) or center word (CBOW).\nStep 3: Words appearing in similar contexts get pushed to similar vector regions.\nStep 4: This enables vector arithmetic: king - man + woman ≈ queen.\n\nAnswer: similar contexts (distributional hypothesis)."},
 ];
 
 
@@ -1109,6 +1149,36 @@ var MOCK_TESTS = [
       "q-1703","q-1704","q-1705","q-1706",
       // === LLM (4) ===
       "q-1803","q-1804","q-1805","q-1806",
+    ]
+  },
+  {
+    id: "exam-c",
+    title: "Exam Practice C",
+    desc: "80 questions, 60 min. MASTERY level - hardest questions, tricky distractors, deep LA/calc.",
+    questions: [
+      // === MATH (12) - hardest math + new traps ===
+      "q-0025","q-0020","q-0068","q-0069","q-0072","q-3922",
+      "q-3963","q-3964","q-3965","q-3966","q-3921","q-3924",
+      // === LINEAR ALGEBRA (16) - heavily emphasized, new matrix mult + vector space ===
+      "q-1004","q-1008","q-1013","q-3000","q-3002","q-3003","q-3901","q-3902",
+      "q-3903","q-3904","q-3926","q-3928","q-3949","q-3951","q-3952","q-3954",
+      // === CALCULUS (16) - heavily emphasized, nested chain rule ===
+      "q-1106","q-1112","q-1113","q-1116","q-3907","q-3908","q-3911","q-3912",
+      "q-3931","q-3932","q-3933","q-3934","q-3957","q-3958","q-3960","q-3961",
+      // === PROGRAMMING (10) - output tracing traps ===
+      "q-1304","q-1305","q-1317","q-3916","q-3917","q-3918",
+      "q-3936","q-3937","q-3967","q-3968",
+      // === OOP (10) - design principle traps ===
+      "q-1413","q-1414","q-1415","q-1416","q-3919","q-3920","q-3941","q-3942",
+      "q-3969","q-3970",
+      // === ML (8) - conceptual traps ===
+      "q-1511","q-1519","q-1520","q-1526","q-3944","q-3945","q-3971","q-1505",
+      // === DL (4) - architecture traps ===
+      "q-1610","q-1611","q-3946","q-3972",
+      // === NLP (2) - embeddings ===
+      "q-1704","q-3973",
+      // === LLM (2) - attention ===
+      "q-3948","q-1806",
     ]
   }
 ];

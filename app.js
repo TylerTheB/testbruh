@@ -64,6 +64,22 @@ function updateHeader() {
   document.getElementById("stat-xp").textContent      = state.xp;
 }
 
+// Shuffle the 4 answer options of a question and remap the correct answer index.
+// Returns a shallow copy so the original question in the bank is untouched.
+function shuffleQOpts(q) {
+  const indices = [0, 1, 2, 3];
+  // Fisher-Yates shuffle
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  return {
+    ...q,
+    opts: indices.map(i => q.opts[i]),
+    ans: indices.indexOf(q.ans),
+  };
+}
+
 // =============================================================
 // Tabs
 // =============================================================
@@ -1016,6 +1032,8 @@ document.getElementById("mock-start").addEventListener("click", () => {
   if (pool.length < requested) {
     toast(`Only ${pool.length} question(s) match — starting with that many`);
   }
+  // Shuffle options for each question so correct answer isn't always A
+  pool = pool.map(shuffleQOpts);
   mockState = {
     qs: pool, idx: 0, selected: {}, submitted: {}, flagged: new Set(),
     startedAt: Date.now(), seconds: minutes * 60, count: pool.length,
@@ -1039,13 +1057,14 @@ function startExamPractice(testId) {
   if (pool.length < test.questions.length) {
     toast("Some questions are missing — starting with " + pool.length);
   }
-  // Shuffle the curated pool
+  // Shuffle the curated pool and randomize option order
   pool.sort(() => Math.random() - 0.5);
+  const shuffled = pool.map(shuffleQOpts);
   const minutes = 60;
   mockState = {
-    qs: pool, idx: 0, selected: {}, submitted: {}, flagged: new Set(),
-    startedAt: Date.now(), seconds: minutes * 60, count: pool.length,
-    requested: pool.length, _title: test.title,
+    qs: shuffled, idx: 0, selected: {}, submitted: {}, flagged: new Set(),
+    startedAt: Date.now(), seconds: minutes * 60, count: shuffled.length,
+    requested: shuffled.length, _title: test.title,
   };
   renderMock();
   startMockTimer();

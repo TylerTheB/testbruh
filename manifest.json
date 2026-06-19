@@ -1,0 +1,11 @@
+{
+  "name": "GIKI Test Prep",
+  "short_name": "GIKI Prep",
+  "description": "ML & Maths Bootcamp — Practice questions for GIKI entrance test",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "orientation": "any",
+  "icons": []
+}

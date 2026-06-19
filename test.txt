@@ -1,0 +1,9 @@
+Summary of test:
+
+  - MCQs on Basic Maths like linear algebra (eg vector matrix multiplications,
+    vector spaces etc ), calculus ( about derivatives and chain rule etc)
+  - Some concepts about basic programming & OOP
+  - Knowledge about ML, DL, NLP and somewhat LLMs basics
+
+these are just examples but obv it would be harder than what is written and not
+

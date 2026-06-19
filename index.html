@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>GIKI Test Prep — ML & Maths Bootcamp</title>
+<meta name="description" content="Practice questions for GIKI entrance test — Maths, Programming, ML, DL, NLP, LLMs"/>
+<meta name="theme-color" content="#0b1020"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">G</div>
+    <div>
+      <div class="title">GIKI Test Prep</div>
+      <div class="subtitle">Maths • Programming • ML • DL • NLP • LLMs</div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><span id="stat-correct">0</span><label>Correct</label></div>
+    <div class="stat"><span id="stat-wrong">0</span><label>Wrong</label></div>
+    <div class="stat"><span id="stat-streak">0</span><label>Streak</label></div>
+    <div class="stat"><span id="stat-xp">0</span><label>XP</label></div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="learn">Learn</button>
+  <button class="tab" data-tab="topics">Topics</button>
+  <button class="tab" data-tab="practice">Practice</button>
+  <button class="tab" data-tab="mock">Mock Test</button>
+  <button class="tab" data-tab="cheatsheet">Cheatsheet</button>
+  <button class="tab" data-tab="review">Review</button>
+  <button class="tab" data-tab="progress">Progress</button>
+</nav>
+
+<!-- Mobile bottom navigation -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bottom-nav-item active" data-tab="learn"><span class="bnav-icon">📖</span>Learn</button>
+    <button class="bottom-nav-item" data-tab="topics"><span class="bnav-icon">📋</span>Topics</button>
+    <button class="bottom-nav-item" data-tab="practice"><span class="bnav-icon">🎯</span>Practice</button>
+    <button class="bottom-nav-item" data-tab="mock"><span class="bnav-icon">⏱️</span>Mock</button>
+    <button class="bottom-nav-item" data-tab="cheatsheet"><span class="bnav-icon">📝</span>Sheets</button>
+    <button class="bottom-nav-item" data-tab="review"><span class="bnav-icon">🔄</span>Review</button>
+    <button class="bottom-nav-item" data-tab="progress"><span class="bnav-icon">📊</span>Stats</button>
+  </div>
+</nav>
+
+<main>
+  <!-- ============= LEARN ============= -->
+  <section class="panel active" id="learn">
+    <div class="filters">
+      <label>Topic:
+        <select id="learn-topic">
+          <option value="all">All</option>
+        </select>
+      </label>
+      <label>Difficulty:
+        <select id="learn-diff">
+          <option value="all">All</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </label>
+      <input id="learn-search" placeholder="Search concepts..." />
+    </div>
+    <div id="learn-list" class="cards"></div>
+  </section>
+
+  <!-- ============= TOPICS ============= -->
+  <section class="panel" id="topics">
+    <div class="filters">
+      <input id="topics-search" placeholder="Search topics..." />
+      <label class="check"><input type="checkbox" id="topics-expand" /> Expand all</label>
+    </div>
+    <div id="topics-list"></div>
+  </section>
+
+  <!-- ============= CHEATSHEET ============= -->
+  <section class="panel" id="cheatsheet">
+    <div class="filters">
+      <label>Subject:
+        <select id="cs-subject"></select>
+      </label>
+      <input id="cs-search" placeholder="Search cheatsheet..." />
+    </div>
+    <div id="cs-list" class="cs-grid"></div>
+  </section>
+
+  <!-- ============= PRACTICE ============= -->
+  <section class="panel" id="practice">
+    <div class="practice-controls">
+      <div class="pc-group">
+        <label>Category:
+          <select id="cat">
+            <option value="all">All (Mixed)</option>
+            <option value="math">Basic Maths</option>
+            <option value="la">Linear Algebra</option>
+            <option value="calc">Calculus</option>
+            <option value="prob">Probability & Stats</option>
+            <option value="prog">Programming</option>
+            <option value="oop">OOP</option>
+            <option value="ml">Machine Learning</option>
+            <option value="dl">Deep Learning</option>
+            <option value="nlp">NLP</option>
+            <option value="llm">LLMs</option>
+            <option value="tricky">★ Tricky (Common Traps)</option>
+          </select>
+        </label>
+        <label>Difficulty:
+          <select id="diff">
+            <option value="all">All</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </label>
+        <label>Count:
+          <select id="qcount">
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option value="endless">Endless</option>
+          </select>
+        </label>
+      </div>
+      <div class="pc-group">
+        <label class="check"><input type="checkbox" id="review-only" /> Wrong/Bookmarked only</label>
+        <label class="check"><input type="checkbox" id="instant-fb" checked /> Instant feedback</label>
+        <button id="start-btn" class="primary">Start</button>
+      </div>
+    </div>
+    <div id="practice-area"></div>
+  </section>
+
+  <!-- ============= MOCK TEST ============= -->
+  <section class="panel" id="mock">
+    <div class="mock-setup">
+      <h2>Mock Test</h2>
+      <p>Timed. No instant feedback. Simulates real test conditions.</p>
+      <div class="pc-group">
+        <label>Questions:
+          <select id="mock-count">
+            <option>20</option>
+            <option>40</option>
+            <option>60</option>
+            <option selected>80</option>
+            <option>100</option>
+          </select>
+        </label>
+        <label>Time (min):
+          <select id="mock-time">
+            <option>15</option>
+            <option selected>30</option>
+            <option>45</option>
+            <option>60</option>
+            <option>90</option>
+            <option>120</option>
+          </select>
+        </label>
+      </div>
+      <div class="mock-cats">
+        <div class="mock-cats-head">
+          <span>Include categories (default = all):</span>
+          <div>
+            <button type="button" id="mock-cat-all" class="mock-cat-btn">Select all</button>
+            <button type="button" id="mock-cat-none" class="mock-cat-btn">Clear</button>
+            <button type="button" id="mock-cat-preset" class="mock-cat-btn">Balanced 80</button>
+          </div>
+        </div>
+        <div id="mock-cats" class="mock-cats-grid"></div>
+      </div>
+      <div class="pc-group" style="margin-top:14px">
+        <button id="mock-start" class="primary">Start Mock</button>
+      </div>
+    </div>
+    <div id="mock-area"></div>
+  </section>
+
+  <!-- ============= REVIEW ============= -->
+  <section class="panel" id="review">
+    <div class="review-tabs">
+      <button class="rtab active" data-rtab="wrong">Wrong</button>
+      <button class="rtab" data-rtab="bookmarked">Bookmarked</button>
+      <button class="rtab" data-rtab="mastered">Mastered</button>
+    </div>
+    <div id="review-list" class="cards"></div>
+  </section>
+
+  <!-- ============= PROGRESS ============= -->
+  <section class="panel" id="progress">
+    <div class="prog-grid">
+      <div class="prog-card">
+        <h3>By Category</h3>
+        <div id="prog-cats"></div>
+      </div>
+      <div class="prog-card">
+        <h3>By Difficulty</h3>
+        <div id="prog-diff"></div>
+      </div>
+      <div class="prog-card">
+        <h3>Coverage</h3>
+        <div id="prog-coverage"></div>
+      </div>
+      <div class="prog-card">
+        <h3>Actions</h3>
+        <button id="export-btn" class="primary">Export Progress (JSON)</button>
+        <!-- #40: per-category reset. Pick a subject to wipe its history
+             without touching your other progress. -->
+        <div style="display:flex;gap:6px;margin-top:8px">
+          <select id="reset-cat"></select>
+          <button id="reset-cat-btn">Reset category</button>
+        </div>
+        <button id="reset-btn" class="danger" style="margin-top:8px">Reset All Progress</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Quiz Card Template -->
+<template id="qcard-tmpl">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge cat"></span>
+      <span class="qbadge diff"></span>
+      <span class="qnum"></span>
+      <span class="qactions">
+        <button class="iconbtn" data-act="bookmark" title="Bookmark">★</button>
+        <button class="iconbtn" data-act="hint" title="Show hint">💡</button>
+        <button class="iconbtn" data-act="report" title="Report this question">⚠</button>
+      </span>
+    </div>
+    <div class="qtext"></div>
+    <div class="qhints"></div>
+    <div class="qopts"></div>
+    <div class="qfeedback"></div>
+    <div class="qfoot">
+      <button class="qprev">← Previous</button>
+      <button class="qretry">↻ Retry</button>
+      <button class="qnext primary">Next →</button>
+      <button class="qsubmit primary">Submit</button>
+    </div>
+  </div>
+</template>
+
+<template id="concept-tmpl">
+  <div class="concept-card">
+    <div class="chead">
+      <h3 class="ctitle"></h3>
+      <div class="cbadges">
+        <span class="qbadge cat"></span>
+        <span class="qbadge diff"></span>
+      </div>
+    </div>
+    <div class="cbody"></div>
+    <div class="cfoot">
+      <span class="cstat"></span>
+      <button class="primary c-pract">Practice →</button>
+    </div>
+  </div>
+</template>
+
+<div id="toast" class="toast"></div>
+
+<script src="data.js"></script>
+<script src="latex.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
